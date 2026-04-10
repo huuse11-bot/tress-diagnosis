@@ -1,91 +1,1221 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>스트레스 상태 진단</title>
-<style>
-body{font-family:sans-serif;background:#111;color:#fff;margin:0;padding:20px}
-.container{max-width:600px;margin:auto}
-button{padding:12px 20px;margin-top:10px;border:none;border-radius:8px;background:#4CAF50;color:#fff;font-size:16px}
-.card{background:#222;padding:20px;border-radius:12px;margin-top:20px}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>5유형 스트레스 진단 · 한국어 버전</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-2: #eef3ff;
+      --text: #182033;
+      --muted: #64708a;
+      --line: #d8e1f2;
+      --accent: #4f7cff;
+      --accent-2: #30c6a8;
+      --danger: #f05d76;
+      --warn: #e1a400;
+      --good: #0e9f6e;
+      --shadow: 0 12px 30px rgba(28, 46, 86, 0.10);
+      --radius: 22px;
+      --radius-sm: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background:
+        radial-gradient(circle at top right, rgba(79,124,255,.12), transparent 22%),
+        radial-gradient(circle at top left, rgba(48,198,168,.09), transparent 18%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+      line-height: 1.6;
+      padding-bottom: calc(110px + env(safe-area-inset-bottom));
+    }
+    button, input, textarea, select { font: inherit; }
+    .app {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 14px 14px 96px;
+    }
+    .screen { display: none; }
+    .screen.active { display: block; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .hero {
+      padding: 22px 18px;
+      background: linear-gradient(135deg, rgba(79,124,255,.10), rgba(48,198,168,.10));
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-size: clamp(26px, 7vw, 38px);
+      line-height: 1.18;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+    h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .lead { color: var(--muted); }
+    .pill-row {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 32px; padding: 6px 12px; border-radius: 999px;
+      border: 1px solid var(--line); background: rgba(255,255,255,.75);
+      font-size: 13px; color: var(--muted);
+    }
+    .grid { display: grid; gap: 12px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .field { display: grid; gap: 7px; }
+    .field label { font-size: 13px; color: var(--muted); }
+    input[type="text"], input[type="date"], textarea, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--text);
+      padding: 13px 14px;
+      outline: none;
+    }
+    textarea { min-height: 108px; resize: vertical; }
+    .note-box {
+      background: #f8fbff; border: 1px dashed var(--line); border-radius: 16px;
+      padding: 12px 14px; font-size: 14px; color: var(--muted);
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      border: none; border-radius: 16px; padding: 14px 16px; min-height: 48px;
+      font-weight: 700; cursor: pointer; transition: transform .08s ease, opacity .15s ease;
+    }
+    .btn:active { transform: scale(.985); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-secondary { background: #fff; color: var(--text); border: 1px solid var(--line); }
+    .btn-ghost { background: #eef3ff; color: var(--accent); }
+    .btn[disabled] { opacity: .45; cursor: not-allowed; }
+
+    .sticky-top {
+      position: sticky; top: 0; z-index: 15; padding-top: env(safe-area-inset-top);
+      background: linear-gradient(180deg, rgba(245,247,251,.96), rgba(245,247,251,.86), rgba(245,247,251,0));
+      margin: -14px -14px 8px; padding: 14px 14px 6px;
+      backdrop-filter: blur(8px);
+    }
+    .progress-wrap {
+      background: rgba(255,255,255,.88); border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px;
+      box-shadow: var(--shadow);
+    }
+    .progress-top {
+      display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 10px;
+      font-size: 13px; color: var(--muted);
+    }
+    .progress-bar {
+      height: 10px; border-radius: 999px; background: #e9eef9; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: inherit; transition: width .2s ease;
+    }
+
+    .q-head {
+      display: flex; justify-content: space-between; gap: 12px; align-items: start; margin-bottom: 12px;
+    }
+    .q-number {
+      font-size: 13px; color: var(--muted);
+    }
+    .q-text {
+      font-size: clamp(20px, 5.5vw, 26px); line-height: 1.4; font-weight: 700; margin-top: 6px;
+    }
+    .q-meta {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+    }
+    .q-badge {
+      display: inline-flex; align-items: center; min-height: 32px;
+      padding: 6px 12px; border-radius: 999px; font-size: 13px;
+      background: #f3f6fd; border: 1px solid var(--line); color: var(--muted);
+    }
+    .big-score {
+      min-width: 70px; text-align: center; border-radius: 18px; padding: 10px 12px;
+      background: #f3f6fd; border: 1px solid var(--line);
+    }
+    .big-score .label { font-size: 11px; color: var(--muted); }
+    .big-score .value { font-size: 28px; line-height: 1.1; font-weight: 800; }
+
+    .score-picker {
+      display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin-top: 14px;
+    }
+    .score-btn {
+      border: 1px solid var(--line); background: #fff; color: var(--text); border-radius: 16px;
+      min-height: 56px; font-size: 19px; font-weight: 800; cursor: pointer;
+    }
+    .score-btn small { display: block; font-size: 10px; font-weight: 600; color: var(--muted); }
+    .score-btn.active {
+      background: linear-gradient(180deg, rgba(79,124,255,.12), rgba(48,198,168,.12));
+      border-color: rgba(79,124,255,.45);
+      color: var(--accent);
+      box-shadow: inset 0 0 0 1px rgba(79,124,255,.08);
+    }
+    .score-help {
+      display: flex; justify-content: space-between; gap: 10px; font-size: 12px; color: var(--muted); margin-top: 8px;
+    }
+    .nav-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;
+    }
+    .quick-nav {
+      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-top: 12px;
+      scrollbar-width: thin;
+    }
+    .dot {
+      flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line);
+      display: grid; place-items: center; font-size: 12px; background: #fff; color: var(--muted); cursor: pointer;
+    }
+    .dot.current { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .dot.answered { background: rgba(48,198,168,.14); color: #197d67; border-color: rgba(48,198,168,.35); }
+    .dot.current.answered { background: linear-gradient(180deg, var(--accent), #6590ff); color: #fff; }
+
+    .stats {
+      display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px;
+    }
+    .stat {
+      background: #f8fbff; border: 1px solid var(--line); border-radius: 16px; padding: 12px;
+    }
+    .stat .k { font-size: 12px; color: var(--muted); }
+    .stat .v { font-size: 22px; font-weight: 800; line-height: 1.2; margin-top: 4px; }
+
+    .category-list { display: grid; gap: 10px; }
+    .cat-card {
+      border: 1px solid var(--line); border-radius: 18px; padding: 14px; background: #fff;
+    }
+    .cat-top {
+      display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px;
+    }
+    .cat-name { font-weight: 800; font-size: 17px; }
+    .cat-score { font-weight: 800; color: var(--accent); }
+    .mini-bar { height: 10px; background: #edf2fb; border-radius: 999px; overflow: hidden; }
+    .mini-bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+    .cat-meta { margin-top: 10px; font-size: 13px; color: var(--muted); }
+
+    .summary-chip-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .summary-chip {
+      padding: 8px 12px; border-radius: 999px; background: #f3f6fd; border: 1px solid var(--line); font-size: 13px;
+    }
+
+    .prompt-box, .plain-box {
+      background: #101725; color: #edf3ff; border-radius: 18px; padding: 16px; border: 1px solid #23314f;
+      white-space: pre-wrap; word-break: break-word; font-size: 13px; line-height: 1.7;
+      max-height: 420px; overflow: auto;
+    }
+    .plain-box { background: #fff; color: var(--text); border: 1px solid var(--line); }
+
+
+    .result-spotlight {
+      position: relative;
+      overflow: hidden;
+      padding: 22px 18px 18px;
+      background: linear-gradient(135deg, rgba(79,124,255,.12), rgba(48,198,168,.10));
+    }
+    .result-spotlight::after{
+      content:'';
+      position:absolute;
+      right:-30px;
+      top:-30px;
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      background: radial-gradient(circle, rgba(79,124,255,.10), rgba(79,124,255,0));
+      pointer-events:none;
+    }
+    .spotlight-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:32px;
+      padding:6px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .spotlight-praise{
+      font-size: clamp(17px, 4.7vw, 22px);
+      line-height: 1.55;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .spotlight-label{
+      font-size: clamp(31px, 8.8vw, 46px);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: .02em;
+      margin: 2px 0 10px;
+    }
+    .spotlight-sub{
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .spotlight-warning{
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px 14px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .spotlight-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 12px;
+    }
+    .spotlight-chip{
+      display:inline-flex;
+      align-items:center;
+      min-height:32px;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--muted);
+    }
+    .spotlight-actions{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      margin-top:14px;
+    }
+    .spotlight-note{
+      font-size:12px;
+      color:var(--muted);
+      text-align:center;
+    }
+
+    canvas {
+      width: 100%; max-width: 100%; display: block;
+      background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 10px;
+    }
+    .bottom-dock-wrap{
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: calc(env(safe-area-inset-bottom) + 10px);
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      padding: 0 14px;
+    }
+    .bottom-dock{
+      width: min(92vw, 420px);
+      background: rgba(255,255,255,.96);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      pointer-events: auto;
+      backdrop-filter: blur(10px);
+    }
+    .bottom-dock summary{ list-style: none; }
+    .bottom-dock-toggle{
+      cursor: pointer;
+      padding: 14px 18px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      background: #fff;
+      user-select: none;
+    }
+    .bottom-dock-toggle::-webkit-details-marker{ display: none; }
+    .bottom-dock-menu{
+      display: grid;
+      gap: 8px;
+      padding: 0 10px 10px;
+      border-top: 1px solid #edf1f8;
+    }
+    .bottom-dock-menu button{
+      width: 100%;
+      min-height: 48px;
+    }
+
+    @media (max-width: 640px) {
+      .grid-2, .stats { grid-template-columns: 1fr; }
+      .nav-row { grid-template-columns: 1fr 1fr; }
+      .score-picker { gap: 6px; }
+      .score-btn { min-height: 54px; font-size: 18px; }
+      .bottom-dock{
+        width: min(94vw, 420px);
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-<h2>스트레스 상태 진단</h2>
+  <div class="app">
+    <section id="screenIntro" class="screen active">
+      <div class="card hero">
+        <h1>5유형 스트레스 진단</h1>
+        <p class="lead">45개의 질문에 0~5로 답하면, 5가지 스트레스 축과 타고난 성향·적응·자각의 흐름을 한 번에 볼 수 있는 공개 버전입니다.</p>
+        <div class="pill-row">
+          <span class="pill">0 = 전혀 아님</span>
+          <span class="pill">5 = 매우 강함</span>
+          <span class="pill">총 45문항</span>
+          <span class="pill">모바일용 한 문항씩</span>
+        </div>
+      </div>
 
-<div id="start">
-<p>지금 당신의 상태를 확인해보세요</p>
-<button onclick="startTest()">시작하기</button>
-</div>
+      <div class="card">
+        <h2>이 진단은 어떤 타입?</h2>
+        <div class="note-box">
+          이 진단은 당신을 단정 짓기 위한 것이 아닙니다.<br>
+          스트레스는 약점이 아니라, 지금 강하게 작동하는 방식으로 봅니다.<br>
+          결과는 자기이해·관계·일·회복 포인트를 가볍게 보는 용도로 쓰면 됩니다.
+        </div>
+      </div>
 
-<div id="test" style="display:none;">
-<p id="question"></p>
-<button onclick="next()">다음</button>
-</div>
+      <div class="card grid">
+        <div class="field">
+          <label for="userName">이름 또는 닉네임</label>
+          <input id="userName" type="text" placeholder="비워도 됩니다">
+        </div>
+        <div class="grid grid-2">
+          <div class="field">
+            <label for="examDate">날짜</label>
+            <input id="examDate" type="date">
+          </div>
+          <div class="field">
+            <label for="genre">고민 주제</label>
+            <select id="genre"></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="stateTemplate">상태 템플릿</label>
+          <select id="stateTemplate"></select>
+        </div>
+        <div class="field">
+          <label for="currentState">지금 상태</label>
+          <textarea id="currentState" placeholder="예: 뭘 먼저 해야 할지 모르겠음, 움직이기 힘듦, 사람 때문에 지침"></textarea>
+        </div>
+        <div class="field">
+          <label for="desiredState">어떻게 되고 싶은지</label>
+          <textarea id="desiredState" placeholder="예: 우선순위를 정리하고 싶음, 바로 움직일 수 있었으면 좋겠음"></textarea>
+        </div>
+        <div class="field">
+          <label for="note">추가 메모</label>
+          <textarea id="note" placeholder="배경, 상대, 환경, 마감 등"></textarea>
+        </div>
+        <div class="btn-row">
+          <button id="startBtn" class="btn btn-primary">진단 시작</button>
+          <button id="jumpResultBtn" class="btn btn-secondary">결과 화면 먼저 보기</button>
+        </div>
+    </section>
 
-<div id="result" style="display:none;">
-<div class="card">
-<h3 id="label"></h3>
-<p id="desc"></p>
-</div>
-<button onclick="restart()">다시 하기</button>
-</div>
+    <section id="screenQuestion" class="screen">
+      <div class="sticky-top">
+        <div class="progress-wrap">
+          <div class="progress-top">
+            <strong id="progressLabel">Q1 / 45</strong>
+            <span><span id="answeredCount">0</span> / 45 응답</span>
+          </div>
+          <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+        </div>
+      </div>
 
-</div>
+      <div class="card">
+        <div class="q-head">
+          <div>
+            <div class="q-number" id="qNumber">Q1 / 45</div>
+            <div class="q-text" id="qText">질문</div>
+            <div class="q-meta">
+              <span class="q-badge" id="qCategory">이해</span>
+              <span class="q-badge" id="qState">타고남</span>
+            </div>
+          </div>
+          <div class="big-score">
+            <div class="label">응답</div>
+            <div class="value" id="currentScore">0</div>
+          </div>
+        </div>
 
-<script>
-const questions = [
-"이유를 알면 더 움직이기 쉽다",
-"사람들의 시선이 신경 쓰인다",
-"주도권을 잡고 싶을 때가 있다",
-"결과가 중요하게 느껴진다",
-"안정된 상황이 편하다"
-];
+        <div class="score-picker" id="scorePicker"></div>
+        <div class="score-help">
+          <span>0 = 전혀 아님</span>
+          <span>5 = 매우 강함</span>
+        </div>
 
-let index = 0;
+        <div class="nav-row">
+          <button id="prevBtn" class="btn btn-secondary">이전</button>
+          <button id="nextBtn" class="btn btn-primary">다음</button>
+        </div>
 
-function startTest(){
-document.getElementById("start").style.display="none";
-document.getElementById("test").style.display="block";
-showQ();
-}
+        <div class="quick-nav" id="quickNav"></div>
+      </div>
 
-function showQ(){
-document.getElementById("question").innerText = questions[index];
-}
+      <div class="card">
+        <div class="stats">
+          <div class="stat"><div class="k">평균 점수</div><div class="v" id="avgScore">0.0</div></div>
+          <div class="stat"><div class="k">5점 개수</div><div class="v" id="maxCount">0</div></div>
+          <div class="stat"><div class="k">미응답</div><div class="v" id="unansweredCount">45</div></div>
+        </div>
+      </div>
+    </section>
 
-function next(){
-index++;
-if(index >= questions.length){
-showResult();
-}else{
-showQ();
-}
-}
+    <section id="screenResult" class="screen">
+      <div class="card hero">
+        <h2>진단 결과</h2>
+        <p class="lead">5개 축의 총량뿐 아니라 타고난 경향·적응·자각의 차이까지 보이도록 구성했습니다.</p>
+      </div>
 
-function showResult(){
-document.getElementById("test").style.display="none";
-document.getElementById("result").style.display="block";
+      <div class="card result-spotlight">
+        <div class="spotlight-kicker">먼저 보는 결과</div>
+        <div id="spotlightPraise" class="spotlight-praise">흐름을 보고 판을 읽는 감각이 있어요</div>
+        <div id="spotlightLabel" class="spotlight-label">논리 컨트롤형</div>
+        <div id="spotlightSub" class="spotlight-sub">이해 × 주도 / 타고남</div>
+        <div id="spotlightWarning" class="spotlight-warning">맞는 말을 해도 상대는 압박으로 느낄 수 있어요.</div>
+        <div class="spotlight-meta">
+          <span id="spotlightPair" class="spotlight-chip">주요 축: 이해 × 주도</span>
+          <span id="spotlightState" class="spotlight-chip">상태: 타고남</span>
+          <span id="spotlightScores" class="spotlight-chip">합계: 0 / 0</span>
+        </div>
+        <div class="spotlight-actions">
+          <button id="spotlightAiBtn" class="btn btn-primary">상세 결과 보기</button>
+          <div class="spotlight-note">이 카드 그대로 캡처해서 공유할 수 있어요</div>
+        </div>
+      </div>
 
-const types = [
-["이해 집착형","생각이 많고 멈추기 쉬운 타입"],
-["눈치 과부하형","신경을 많이 써서 쉽게 지치는 타입"],
-["주도권 장악형","상황을 통제하려는 경향"],
-["결과 중독형","성과 중심으로 움직이는 타입"],
-["안정 의존형","안정이 있어야 힘이 나는 타입"]
-];
+      <div class="card">
+        <h2>상태 요약</h2>
+        <div class="summary-chip-wrap" id="summaryChips"></div>
+        <div class="plain-box" id="stateSummary" style="margin-top:12px;"></div>
+      </div>
 
-let pick = types[Math.floor(Math.random()*types.length)];
-document.getElementById("label").innerText = pick[0];
-document.getElementById("desc").innerText = pick[1];
-}
+      <div class="card">
+        <h2>5유형 레이더</h2>
+        <canvas id="radarCanvas" width="640" height="420"></canvas>
+      </div>
 
-function restart(){
-location.reload();
-}
-</script>
+      <div class="card">
+        <h2>5유형 바 그래프</h2>
+        <canvas id="barCanvas" width="640" height="380"></canvas>
+      </div>
 
+      <div class="card">
+        <h2>유형별 상세</h2>
+        <div id="categoryList" class="category-list"></div>
+      </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="bottom-dock-wrap">
+    <details class="bottom-dock" id="bottomDock">
+      <summary class="bottom-dock-toggle">메뉴</summary>
+      <div class="bottom-dock-menu">
+        <button id="goIntroBtn" class="btn btn-secondary">소개</button>
+        <button id="goQuestionBtn" class="btn btn-ghost">질문</button>
+        <button id="goResultBtn" class="btn btn-primary">결과</button>
+        <button id="csvBtn" class="btn btn-secondary">CSV 저장</button>
+        <button id="resetBtn" class="btn btn-secondary">초기화</button>
+      </div>
+    </details>
+  </div>
+
+  <script>
+    const QUESTIONS = [
+      { no: 1, text: "이유나 구조를 알면 더 움직이기 쉽다", category: "整合", state: "素質" },
+      { no: 2, text: "모순이나 어긋남이 있으면 신경 쓰인다", category: "整合", state: "素質" },
+      { no: 3, text: "납득 안 된 상태로 진행하는 게 불편하다", category: "整合", state: "素質" },
+      { no: 4, text: "납득 안 돼도 필요하면 움직일 수 있다", category: "整合", state: "適応" },
+      { no: 5, text: "흐름에 맞춰 일단 보류할 수 있다", category: "整合", state: "適応" },
+      { no: 6, text: "신경 쓰여도 멈추지 않고 계속할 수 있다", category: "整合", state: "適応" },
+      { no: 7, text: "나는 납득을 중요하게 생각하는 편이다", category: "整合", state: "自覚" },
+      { no: 8, text: "생각이 많아져서 멈출 때가 있다", category: "整合", state: "自覚" },
+      { no: 9, text: "납득 안 될 때 어떻게 정리할지 알고 있다", category: "整合", state: "自覚" },
+      { no: 10, text: "사람들의 시선이나 반응이 신경 쓰인다", category: "空気", state: "素質" },
+      { no: 11, text: "분위기나 감정 변화에 잘 눈치 챈다", category: "空気", state: "素質" },
+      { no: 12, text: "상대가 어떻게 느낄지 생각하고 행동한다", category: "空気", state: "素質" },
+      { no: 13, text: "상황에 맞게 말투나 행동을 바꿀 수 있다", category: "空気", state: "適応" },
+      { no: 14, text: "분위기를 깨지 않으려고 참을 때가 있다", category: "空気", state: "適応" },
+      { no: 15, text: "맞춰주면서 상황을 유지하려는 편이다", category: "空気", state: "適応" },
+      { no: 16, text: "나는 분위기에 영향을 많이 받는 편이다", category: "空気", state: "自覚" },
+      { no: 17, text: "신경을 많이 써서 지칠 때가 있다", category: "空気", state: "自覚" },
+      { no: 18, text: "어디까지 맞출지 기준을 생각한다", category: "空気", state: "自覚" },
+      { no: 19, text: "내가 결정할 수 있을 때 더 편하다", category: "支配", state: "素質" },
+      { no: 20, text: "흐름이나 방식을 정리하고 싶어질 때가 있다", category: "支配", state: "素質" },
+      { no: 21, text: "사람이나 상황을 컨트롤하고 싶어진다", category: "支配", state: "素質" },
+      { no: 22, text: "필요하면 주도적으로 움직일 수 있다", category: "支配", state: "適応" },
+      { no: 23, text: "애매할 때 방향을 잡아줄 수 있다", category: "支配", state: "適応" },
+      { no: 24, text: "주변 상황을 보고 역할을 정리하려 한다", category: "支配", state: "適応" },
+      { no: 25, text: "내가 주도권을 잡으려 할 때가 있다", category: "支配", state: "自覚" },
+      { no: 26, text: "지시할 때와 맡길 때를 구분한다", category: "支配", state: "自覚" },
+      { no: 27, text: "강하게 보일 수 있다는 걸 알고 있다", category: "支配", state: "自覚" },
+      { no: 28, text: "결과가 나오는지 중요하게 생각한다", category: "成果", state: "素質" },
+      { no: 29, text: "비효율적인 흐름에 스트레스를 느낀다", category: "成果", state: "素質" },
+      { no: 30, text: "성과와 효율을 중요하게 여긴다", category: "成果", state: "素質" },
+      { no: 31, text: "목표에 맞게 방식을 바꿀 수 있다", category: "成果", state: "適応" },
+      { no: 32, text: "결과를 위해 우선순위를 바꾼다", category: "成果", state: "適応" },
+      { no: 33, text: "필요하면 감정보다 결과를 선택한다", category: "成果", state: "適応" },
+      { no: 34, text: "나는 성과 중심적인 편이다", category: "成果", state: "自覚" },
+      { no: 35, text: "급하게 결과를 내려고 할 때가 있다", category: "成果", state: "自覚" },
+      { no: 36, text: "성과 때문에 자신이나 타인에게 엄격해진다", category: "成果", state: "自覚" },
+      { no: 37, text: "익숙하고 안정적인 방식을 선호한다", category: "安定", state: "素質" },
+      { no: 38, text: "앞이 안 보이면 불안해진다", category: "安定", state: "素質" },
+      { no: 39, text: "예상 못 한 변화에 부담을 느낀다", category: "安定", state: "素質" },
+      { no: 40, text: "정해진 방법이 있으면 움직이기 쉽다", category: "安定", state: "適応" },
+      { no: 41, text: "안전한 선택을 하려고 한다", category: "安定", state: "適応" },
+      { no: 42, text: "변화도 천천히면 적응할 수 있다", category: "安定", state: "適応" },
+      { no: 43, text: "나는 안정감을 중요하게 생각한다", category: "安定", state: "自覚" },
+      { no: 44, text: "불안하면 행동이 느려진다", category: "安定", state: "自覚" },
+      { no: 45, text: "안정될 때 더 잘할 수 있다", category: "安定", state: "自覚" }
+    ];
+
+    const CATEGORIES = ["整合", "空気", "支配", "成果", "安定"] ;
+    const CATEGORY_LABELS = { "整合": "이해", "空気": "눈치", "支配": "주도", "成果": "성과", "安定": "안정" };
+    const STATE_LABELS = { "素質": "타고남", "適応": "적응", "自覚": "자각" };
+    const TREE = {
+      genres: ["", "일 / 작업", "인간관계", "자기이해", "연애"],
+      templates: {
+        "일 / 작업": ["", "뭘 먼저 해야 할지 모르겠다", "효율이 떨어지고 낭비가 많다", "납득이 안 돼서 못 움직인다", "지치는데 멈출 수가 없다"],
+        "인간관계": ["", "상대 마음을 잘 모르겠다", "눈치를 너무 많이 본다", "하고 싶은 말을 못 하겠다", "거리감 잡기가 어렵다"],
+        "자기이해": ["", "내가 뭘 원하는지 모르겠다", "속마음과 행동이 어긋난다", "잘하는 것과 못하는 게 헷갈린다", "생각이 정리가 안 된다"],
+        "연애": ["", "상대에게 너무 맞춘다", "불안이 크다", "하고 싶은 말을 못 한다", "상대 속마음을 모르겠다"]
+      }
+    };
+
+    const STORAGE_KEY = 'stress5_public_mobile_v1';
+
+    const LABEL_PATTERNS = {
+      '整合|空気|素質': { praise: '생각도 많고 눈치도 빠른 편이에요', label: '생각 눈치 과부하형', warning: '혼자 다 정리하려고 하다가 금방 과부하가 올 수 있어요.' },
+      '整合|空気|適応': { praise: '분위기 안 깨고 말 맞추는 감각이 있어요', label: '조율 눈치형', warning: '맞춰주다 보면 정작 내 기준은 뒤로 밀릴 수 있어요.' },
+      '整合|空気|自覚': { praise: '사람도 보고 의미도 챙기는 타입이에요', label: '해석 배려형', warning: '설명과 배려를 다 챙기려다 쉽게 지칠 수 있어요.' },
+      '整合|支配|素質': { praise: '흐름을 보고 판을 읽는 감각이 있어요', label: '논리 컨트롤형', warning: '맞는 말을 해도 상대는 압박으로 느낄 수 있어요.' },
+      '整合|支配|適応': { praise: '필요할 때 구조를 잡고 앞으로 나갈 수 있어요', label: '판짜기 주도형', warning: '정리 속도가 빠를수록 주변 감정은 놓치기 쉬워요.' },
+      '整合|支配|自覚': { praise: '문제 포인트를 바로 잡아내는 편이에요', label: '전제 해체형', warning: '고치려는 힘이 강할수록 비판처럼 보일 수 있어요.' },
+      '整合|成果|素質': { praise: '왜 비효율적인지 바로 보는 편이에요', label: '완벽 집착형', warning: '결과와 완성도를 같이 잡으려다 스스로를 몰아붙일 수 있어요.' },
+      '整合|成果|適応': { praise: '방법을 바꿔서라도 결과를 만드는 힘이 있어요', label: '논리 성과형', warning: '정답에 가까울수록 여유와 유연함이 줄 수 있어요.' },
+      '整合|成果|自覚': { praise: '정확도와 결과 둘 다 놓치기 싫은 타입이에요', label: '정답 집착형', warning: '잘해야 한다는 압박이 쌓이면 쉽게 예민해질 수 있어요.' },
+      '整合|安定|素質': { praise: '이해가 돼야 마음도 안정되는 편이에요', label: '불안 분석형', warning: '생각으로 불안을 줄이려다 오히려 더 커질 수 있어요.' },
+      '整合|安定|適応': { praise: '차분하게 정리하면서 버티는 힘이 있어요', label: '안정 정리형', warning: '흐름을 안전하게 만들려다 속도가 느려질 수 있어요.' },
+      '整合|安定|自覚': { praise: '내가 불안해지는 패턴을 잘 아는 편이에요', label: '예측 안심형', warning: '예상 가능한 흐름에만 머물고 싶어질 수 있어요.' },
+      '空気|支配|素質': { praise: '분위기도 보고 흐름도 잡는 편이에요', label: '눈치 리더형', warning: '상대 배려와 통제를 동시에 하려다 피로가 쌓일 수 있어요.' },
+      '空気|支配|適応': { praise: '사람 보면서 자연스럽게 주도권을 잡아요', label: '관계 주도형', warning: '좋게 끌고 가려다 책임을 과하게 떠안을 수 있어요.' },
+      '空気|支配|自覚': { praise: '내 영향력이 어떻게 보이는지 아는 편이에요', label: '분위기 장악형', warning: '상황을 읽는 힘이 강할수록 예민함도 같이 올라갈 수 있어요.' },
+      '空気|成果|素質': { praise: '사람도 챙기고 결과도 챙기고 싶은 편이에요', label: '눈치 성과형', warning: '둘 다 챙기려다 내 에너지가 먼저 바닥날 수 있어요.' },
+      '空気|成果|適応': { praise: '분위기 안 깨고 성과를 내는 감각이 있어요', label: '조용한 성과형', warning: '겉으론 부드러워도 속으론 압박이 클 수 있어요.' },
+      '空気|成果|自覚': { praise: '사람 반응과 결과를 동시에 신경 쓰는 편이에요', label: '평가 예민형', warning: '좋은 평가를 의식할수록 쉽게 지칠 수 있어요.' },
+      '空気|安定|素質': { praise: '편안한 분위기에서 힘이 나는 편이에요', label: '눈치 회피형', warning: '갈등을 피하려다 하고 싶은 말을 삼킬 수 있어요.' },
+      '空気|安定|適応': { praise: '불편한 상황을 조용히 넘기는 힘이 있어요', label: '평온 유지형', warning: '무난함을 지키려다 내 욕구가 밀릴 수 있어요.' },
+      '空気|安定|自覚': { praise: '내가 어디서 지치고 흔들리는지 아는 편이에요', label: '불안 공감형', warning: '타인 감정까지 받아내면 회복이 늦어질 수 있어요.' },
+      '支配|成果|素質': { praise: '결과를 위해 판을 움직이는 힘이 강해요', label: '성과 지배형', warning: '성과가 급할수록 사람을 몰아붙이기 쉬워요.' },
+      '支配|成果|適応': { praise: '필요할 때 치고 나가서 결과를 만드는 편이에요', label: '주도 돌파형', warning: '밀어붙이는 힘이 강할수록 주변 여유는 줄어들 수 있어요.' },
+      '支配|成果|自覚': { praise: '내가 주도하고 성과를 내야 직성이 풀리는 편이에요', label: '결과 장악형', warning: '통제 욕구가 강해질수록 피로도 같이 커질 수 있어요.' },
+      '支配|安定|素質': { praise: '내가 잡고 있어야 마음이 놓이는 편이에요', label: '통제 불안형', warning: '내 손에 없으면 불안이 커질 수 있어요.' },
+      '支配|安定|適応': { praise: '흐름을 관리하면서 안정감을 만들 수 있어요', label: '관리 안심형', warning: '안전한 통제에 익숙해지면 변화가 버겁게 느껴질 수 있어요.' },
+      '支配|安定|自覚': { praise: '내가 왜 통제하려는지 아는 편이에요', label: '질서 고수형', warning: '예상 밖 상황이 오면 긴장감이 크게 올라갈 수 있어요.' },
+      '成果|安定|素質': { praise: '결과가 안 나오면 불안해지는 편이에요', label: '성과 불안형', warning: '잘해내야 안심되는 패턴이 반복될 수 있어요.' },
+      '成果|安定|適応': { praise: '안전하게 성과 내는 방식을 찾는 편이에요', label: '안전 성과형', warning: '실패를 줄이려다 도전 강도가 낮아질 수 있어요.' },
+      '成果|安定|自覚': { praise: '성과와 안정 둘 다 놓치기 싫은 타입이에요', label: '안정 집착형', warning: '둘 다 챙기려다 오히려 내 압박만 커질 수 있어요.' }
+    };
+
+    function getTopTwoCategories(byCategory) {
+      return [...CATEGORIES]
+        .sort((a, b) => {
+          const diff = byCategory[b].total - byCategory[a].total;
+          if (diff !== 0) return diff;
+          return CATEGORIES.indexOf(a) - CATEGORIES.indexOf(b);
+        })
+        .slice(0, 2);
+    }
+
+    function getDominantState(pair, byCategory) {
+      const [a, b] = pair;
+      const totals = ['素質', '適応', '自覚'].map(stateName => ({
+        state: stateName,
+        score: byCategory[a][stateName] + byCategory[b][stateName]
+      }));
+      totals.sort((x, y) => {
+        const diff = y.score - x.score;
+        if (diff !== 0) return diff;
+        return ['素質','適応','自覚'].indexOf(x.state) - ['素質','適応','自覚'].indexOf(y.state);
+      });
+      return totals[0];
+    }
+
+    function getSpotlightResult(result) {
+      const pair = getTopTwoCategories(result.byCategory);
+      const dominant = getDominantState(pair, result.byCategory);
+      const key = `${pair[0]}|${pair[1]}|${dominant.state}`;
+      const pattern = LABEL_PATTERNS[key] || {
+        praise: '지금 강하게 작동하는 축이 분명한 편이에요',
+        label: '패턴 감지형',
+        warning: '강한 힘일수록 무리할 때는 부담으로 바뀔 수 있어요.'
+      };
+      return {
+        ...pattern,
+        pair,
+        pairText: `${CATEGORY_LABELS[pair[0]] || pair[0]} × ${CATEGORY_LABELS[pair[1]] || pair[1]}`,
+        state: dominant.state,
+        pairTotal: result.byCategory[pair[0]].total + result.byCategory[pair[1]].total,
+        stateScore: dominant.score
+      };
+    }
+
+    function renderSpotlight(result) {
+      const spotlight = getSpotlightResult(result);
+      els.spotlightPraise.textContent = spotlight.praise;
+      els.spotlightLabel.textContent = spotlight.label;
+      els.spotlightSub.textContent = `${spotlight.pairText} / ${STATE_LABELS[spotlight.state] || spotlight.state}`;
+      els.spotlightWarning.textContent = spotlight.warning;
+      els.spotlightPair.textContent = `주요 축: ${spotlight.pairText}`;
+      els.spotlightState.textContent = `상태: ${STATE_LABELS[spotlight.state] || spotlight.state}`;
+      els.spotlightScores.textContent = `합계: ${spotlight.pairTotal} / 상태 점수: ${spotlight.stateScore}`;
+    }
+
+    const state = {
+      currentIndex: 0,
+      answers: Array(QUESTIONS.length).fill(null)
+    };
+
+    const els = {
+      screens: {
+        intro: document.getElementById('screenIntro'),
+        question: document.getElementById('screenQuestion'),
+        result: document.getElementById('screenResult')
+      },
+      userName: document.getElementById('userName'),
+      examDate: document.getElementById('examDate'),
+      genre: document.getElementById('genre'),
+      stateTemplate: document.getElementById('stateTemplate'),
+      currentState: document.getElementById('currentState'),
+      desiredState: document.getElementById('desiredState'),
+      note: document.getElementById('note'),
+      startBtn: document.getElementById('startBtn'),
+      jumpResultBtn: document.getElementById('jumpResultBtn'),
+      goIntroBtn: document.getElementById('goIntroBtn'),
+      goQuestionBtn: document.getElementById('goQuestionBtn'),
+      goResultBtn: document.getElementById('goResultBtn'),
+      csvBtn: document.getElementById('csvBtn'),
+      resetBtn: document.getElementById('resetBtn'),
+      bottomDock: document.getElementById('bottomDock'),
+      progressLabel: document.getElementById('progressLabel'),
+      progressFill: document.getElementById('progressFill'),
+      answeredCount: document.getElementById('answeredCount'),
+      qNumber: document.getElementById('qNumber'),
+      qText: document.getElementById('qText'),
+      qCategory: document.getElementById('qCategory'),
+      qState: document.getElementById('qState'),
+      currentScore: document.getElementById('currentScore'),
+      scorePicker: document.getElementById('scorePicker'),
+      prevBtn: document.getElementById('prevBtn'),
+      nextBtn: document.getElementById('nextBtn'),
+      quickNav: document.getElementById('quickNav'),
+      avgScore: document.getElementById('avgScore'),
+      maxCount: document.getElementById('maxCount'),
+      unansweredCount: document.getElementById('unansweredCount'),
+      summaryChips: document.getElementById('summaryChips'),
+      stateSummary: document.getElementById('stateSummary'),
+      categoryList: document.getElementById('categoryList'),
+      radarCanvas: document.getElementById('radarCanvas'),
+      barCanvas: document.getElementById('barCanvas'),
+      spotlightPraise: document.getElementById('spotlightPraise'),
+      spotlightLabel: document.getElementById('spotlightLabel'),
+      spotlightSub: document.getElementById('spotlightSub'),
+      spotlightWarning: document.getElementById('spotlightWarning'),
+      spotlightPair: document.getElementById('spotlightPair'),
+      spotlightState: document.getElementById('spotlightState'),
+      spotlightScores: document.getElementById('spotlightScores'),
+      spotlightAiBtn: document.getElementById('spotlightAiBtn')
+    };
+
+    function closeDock() {
+      if (els.bottomDock) els.bottomDock.open = false;
+    }
+
+    function showScreen(name) {
+      Object.entries(els.screens).forEach(([key, el]) => {
+        el.classList.toggle('active', key === name);
+      });
+      closeDock();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function initGenreOptions() {
+      els.genre.innerHTML = TREE.genres.map(v => `<option value="${v}">${v || '선택해 주세요'}</option>`).join('');
+      updateTemplateOptions();
+    }
+
+    function updateTemplateOptions() {
+      const options = TREE.templates[els.genre.value] || [""];
+      els.stateTemplate.innerHTML = options.map(v => `<option value="${v}">${v || '선택 가능한 템플릿 없음'}</option>`).join('');
+    }
+
+    function buildScorePicker() {
+      els.scorePicker.innerHTML = '';
+      for (let i = 0; i <= 5; i += 1) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'score-btn';
+        btn.dataset.value = String(i);
+        btn.innerHTML = `${i}<small>${i === 0 ? '없음' : i === 5 ? '강함' : ''}</small>`;
+        btn.addEventListener('click', () => {
+          state.answers[state.currentIndex] = i;
+          persist();
+          renderQuestion();
+          updateComputed();
+        });
+        els.scorePicker.appendChild(btn);
+      }
+    }
+
+    function buildQuickNav() {
+      els.quickNav.innerHTML = '';
+      QUESTIONS.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'dot';
+        btn.textContent = q.no;
+        btn.addEventListener('click', () => {
+          state.currentIndex = idx;
+          persist();
+          renderQuestion();
+        });
+        els.quickNav.appendChild(btn);
+      });
+    }
+
+    function renderQuestion() {
+      const q = QUESTIONS[state.currentIndex];
+      const rawValue = state.answers[state.currentIndex];
+      const value = rawValue ?? 0;
+      els.progressLabel.textContent = `Q${state.currentIndex + 1} / ${QUESTIONS.length}`;
+      els.qNumber.textContent = `Q${q.no} / ${QUESTIONS.length}`;
+      els.qText.textContent = q.text;
+      els.qCategory.textContent = CATEGORY_LABELS[q.category] || q.category;
+      els.qState.textContent = STATE_LABELS[q.state] || q.state;
+      els.currentScore.textContent = String(value);
+      els.prevBtn.disabled = state.currentIndex === 0;
+      els.nextBtn.textContent = state.currentIndex === QUESTIONS.length - 1 ? '결과 보기' : '다음';
+
+      [...els.scorePicker.children].forEach(btn => {
+        btn.classList.toggle('active', Number(btn.dataset.value) === value);
+      });
+
+      [...els.quickNav.children].forEach((dot, idx) => {
+        dot.classList.toggle('current', idx === state.currentIndex);
+        dot.classList.toggle('answered', state.answers[idx] !== null && state.answers[idx] !== undefined);
+      });
+      const currentDot = els.quickNav.children[state.currentIndex];
+      currentDot?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    function collectMeta() {
+      return {
+        userName: els.userName.value.trim(),
+        examDate: els.examDate.value,
+        genre: els.genre.value,
+        stateTemplate: els.stateTemplate.value,
+        currentState: els.currentState.value.trim(),
+        desiredState: els.desiredState.value.trim(),
+        note: els.note.value.trim()
+      };
+    }
+
+    function collectAnswers() {
+      return QUESTIONS.map((q, idx) => ({ ...q, value: state.answers[idx] === null || state.answers[idx] === undefined ? null : Number(state.answers[idx]) }));
+    }
+
+    function computeResults() {
+      const answers = collectAnswers();
+      const byCategory = Object.fromEntries(CATEGORIES.map(cat => [cat, {
+        total: 0, count: 0, max: 45, 素質: 0, 適応: 0, 自覚: 0, gap: 0, status: '中'
+      }]));
+
+      answers.forEach(a => {
+        const row = byCategory[a.category];
+        const score = a.value ?? 0;
+        row.total += score;
+        row.count += 1;
+        row[a.state] += score;
+      });
+
+      CATEGORIES.forEach(cat => {
+        const row = byCategory[cat];
+        row.rate = row.total / row.max;
+        row.gap = Math.abs(row["素質"] - row["適応"]);
+        row.status = row.total >= 30 ? '높음' : row.total <= 20 ? '낮음' : '보통';
+      });
+
+      const highItems = CATEGORIES.filter(cat => byCategory[cat].total >= 30);
+      const lowItems = CATEGORIES.filter(cat => byCategory[cat].total <= 20);
+      const gapItems = CATEGORIES.filter(cat => byCategory[cat].gap >= 10);
+      const mainTrait = CATEGORIES.reduce((a, b) => byCategory[a]["素質"] >= byCategory[b]["素質"] ? a : b);
+      const stressAxis = CATEGORIES.reduce((a, b) => byCategory[a].total >= byCategory[b].total ? a : b);
+      const answeredAnswers = answers.filter(a => a.value !== null);
+      const avg = answeredAnswers.length ? answeredAnswers.reduce((sum, a) => sum + a.value, 0) / answeredAnswers.length : 0;
+      const maxCount = answers.filter(a => a.value === 5).length;
+      const answered = answeredAnswers.length;
+
+      return {
+        answers,
+        byCategory,
+        highItems: highItems.length ? highItems : ['없음'],
+        lowItems: lowItems.length ? lowItems : ['없음'],
+        gapItems: gapItems.length ? gapItems : ['없음'],
+        mainTrait,
+        stressAxis,
+        avg,
+        maxCount,
+        answered
+      };
+    }
+
+    function generateSummary(result) {
+      return [
+        '【상태 요약】',
+        `높게 나온 축: ${result.highItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
+        `낮게 나온 축: ${result.lowItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
+        `차이가 큰 축: ${result.gapItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
+        `가장 기본 성향: ${CATEGORY_LABELS[result.mainTrait] || result.mainTrait}`,
+        `가장 많이 자극받는 축: ${CATEGORY_LABELS[result.stressAxis] || result.stressAxis}`
+      ].join('\n');
+    }
+
+    function generatePrompt(result) {
+      return '';
+    }
+
+    function renderSummary(result) {
+      els.stateSummary.textContent = generateSummary(result);
+      const chips = [
+        `높게 나온 축: ${result.highItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
+        `낮게 나온 축: ${result.lowItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
+        `차이가 큰 축: ${result.gapItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
+        `기본 성향: ${CATEGORY_LABELS[result.mainTrait] || result.mainTrait}`,
+        `자극받는 축: ${CATEGORY_LABELS[result.stressAxis] || result.stressAxis}`
+      ];
+      els.summaryChips.innerHTML = chips.map(text => `<span class="summary-chip">${text}</span>`).join('');
+    }
+
+    function renderCategoryCards(result) {
+      els.categoryList.innerHTML = CATEGORIES.map(cat => {
+        const row = result.byCategory[cat];
+        const pct = Math.round(row.rate * 100);
+        return `
+          <div class="cat-card">
+            <div class="cat-top">
+              <div class="cat-name">${CATEGORY_LABELS[cat] || cat}</div>
+              <div class="cat-score">${row.total} / ${row.max}</div>
+            </div>
+            <div class="mini-bar"><span style="width:${pct}%"></span></div>
+            <div class="cat-meta">
+              타고남 ${row["素質"]} / 적응 ${row["適応"]} / 자각 ${row["自覚"]} / 차이 ${row.gap} / 상태 ${row.status}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function drawRadar(result) {
+      const canvas = els.radarCanvas;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      const cx = w / 2;
+      const cy = h / 2 + 10;
+      const radius = Math.min(w, h) * 0.33;
+      const levels = 5;
+      const values = CATEGORIES.map(cat => result.byCategory[cat].total / 45);
+
+      ctx.strokeStyle = '#d8e1f2';
+      ctx.lineWidth = 1;
+      for (let level = 1; level <= levels; level++) {
+        const r = radius * (level / levels);
+        ctx.beginPath();
+        CATEGORIES.forEach((_, i) => {
+          const angle = (-Math.PI / 2) + (Math.PI * 2 * i / CATEGORIES.length);
+          const x = cx + Math.cos(angle) * r;
+          const y = cy + Math.sin(angle) * r;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      CATEGORIES.forEach((cat, i) => {
+        const angle = (-Math.PI / 2) + (Math.PI * 2 * i / CATEGORIES.length);
+        const x = cx + Math.cos(angle) * radius;
+        const y = cy + Math.sin(angle) * radius;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
+        const lx = cx + Math.cos(angle) * (radius + 26);
+        const ly = cy + Math.sin(angle) * (radius + 26);
+        ctx.fillStyle = '#182033';
+        ctx.font = 'bold 15px sans-serif';
+        ctx.textAlign = lx < cx - 10 ? 'right' : lx > cx + 10 ? 'left' : 'center';
+        ctx.textBaseline = ly < cy - 5 ? 'bottom' : ly > cy + 5 ? 'top' : 'middle';
+        ctx.fillText(CATEGORY_LABELS[cat] || cat, lx, ly);
+      });
+
+      ctx.beginPath();
+      values.forEach((value, i) => {
+        const angle = (-Math.PI / 2) + (Math.PI * 2 * i / CATEGORIES.length);
+        const x = cx + Math.cos(angle) * radius * value;
+        const y = cy + Math.sin(angle) * radius * value;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(79,124,255,0.18)';
+      ctx.fill();
+      ctx.strokeStyle = '#4f7cff';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      values.forEach((value, i) => {
+        const angle = (-Math.PI / 2) + (Math.PI * 2 * i / CATEGORIES.length);
+        const x = cx + Math.cos(angle) * radius * value;
+        const y = cy + Math.sin(angle) * radius * value;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#30c6a8';
+        ctx.fill();
+      });
+    }
+
+    function drawBars(result) {
+      const canvas = els.barCanvas;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const left = 96;
+      const top = 34;
+      const rowGap = 58;
+      const barH = 18;
+      const maxW = w - left - 50;
+
+      CATEGORIES.forEach((cat, idx) => {
+        const y = top + idx * rowGap;
+        const total = result.byCategory[cat].total;
+        const width = (total / 45) * maxW;
+
+        ctx.fillStyle = '#182033';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(CATEGORY_LABELS[cat] || cat, 20, y + barH / 2);
+
+        ctx.fillStyle = '#edf2fb';
+        roundRect(ctx, left, y, maxW, barH, 9, true, false);
+        ctx.fillStyle = '#4f7cff';
+        roundRect(ctx, left, y, width, barH, 9, true, false);
+
+        ctx.fillStyle = '#64708a';
+        ctx.font = '13px sans-serif';
+        ctx.fillText(`타고남 ${result.byCategory[cat]["素質"]} / 적응 ${result.byCategory[cat]["適応"]} / 자각 ${result.byCategory[cat]["自覚"]}`, left, y + 34);
+
+        ctx.fillStyle = '#182033';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(`${total} / 45`, w - 18, y + barH / 2);
+      });
+    }
+
+    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+      if (width <= 0) return;
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + width, y, x + width, y + height, radius);
+      ctx.arcTo(x + width, y + height, x, y + height, radius);
+      ctx.arcTo(x, y + height, x, y, radius);
+      ctx.arcTo(x, y, x + width, y, radius);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
+
+    function updateStats(result) {
+      const answered = result.answered;
+      const progress = Math.round(answered / QUESTIONS.length * 100);
+      els.answeredCount.textContent = String(answered);
+      els.progressFill.style.width = `${progress}%`;
+      els.avgScore.textContent = result.avg.toFixed(1);
+      els.maxCount.textContent = String(result.maxCount);
+      els.unansweredCount.textContent = String(QUESTIONS.length - answered);
+    }
+
+    function updateComputed() {
+      const result = computeResults();
+      updateStats(result);
+      renderSpotlight(result);
+      renderSummary(result);
+      renderCategoryCards(result);
+      drawRadar(result);
+      drawBars(result);
+    }
+
+    function toCSVRow(values) {
+      return values.map(value => {
+        const text = String(value ?? '');
+        return `"${text.replace(/"/g, '""')}"`;
+      }).join(',');
+    }
+
+    function downloadCSV() {
+      const result = computeResults();
+      const meta = collectMeta();
+      const lines = [];
+      lines.push(toCSVRow(['section', 'name', 'value1', 'value2', 'value3', 'value4', 'value5']));
+      lines.push(toCSVRow(['meta', 'name', meta.userName]));
+      lines.push(toCSVRow(['meta', 'date', meta.examDate]));
+      lines.push(toCSVRow(['meta', 'genre', meta.genre]));
+      lines.push(toCSVRow(['meta', 'currentState', meta.currentState]));
+      lines.push(toCSVRow(['meta', 'desiredState', meta.desiredState]));
+      lines.push(toCSVRow(['meta', 'note', meta.note]));
+      CATEGORIES.forEach(cat => {
+        const row = result.byCategory[cat];
+        lines.push(toCSVRow(['result', cat, row.total, row["素質"], row["適応"], row["自覚"], row.gap]));
+      });
+      result.answers.forEach(answer => {
+        lines.push(toCSVRow(['answer', answer.no, answer.category, answer.state, answer.text, answer.value ?? '']));
+      });
+      lines.push(toCSVRow(['summary', 'text', generateSummary(result)]));
+
+      const csv = '\uFEFF' + lines.join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '5유형_스트레스_진단_응답.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+      closeDock();
+    }
+
+
+    function bindEvents() {
+      els.startBtn.addEventListener('click', () => showScreen('question'));
+      els.jumpResultBtn.addEventListener('click', () => showScreen('result'));
+      els.goIntroBtn.addEventListener('click', () => showScreen('intro'));
+      els.goQuestionBtn.addEventListener('click', () => showScreen('question'));
+      els.goResultBtn.addEventListener('click', () => showScreen('result'));
+      els.spotlightAiBtn.addEventListener('click', () => {
+        showScreen('result');
+        document.getElementById('categoryList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      els.csvBtn.addEventListener('click', downloadCSV);
+      els.resetBtn.addEventListener('click', () => {
+        if (!confirm('입력 내용을 모두 지울까요?')) return;
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      });
+
+      els.prevBtn.addEventListener('click', () => {
+        state.currentIndex = Math.max(0, state.currentIndex - 1);
+        persist();
+        renderQuestion();
+      });
+      els.nextBtn.addEventListener('click', () => {
+        if (state.currentIndex === QUESTIONS.length - 1) {
+          showScreen('result');
+          return;
+        }
+        state.currentIndex = Math.min(QUESTIONS.length - 1, state.currentIndex + 1);
+        persist();
+        renderQuestion();
+      });
+
+      [els.userName, els.examDate, els.currentState, els.desiredState, els.note].forEach(el => {
+        el.addEventListener('input', () => {
+          persist();
+          updateComputed();
+        });
+      });
+      els.genre.addEventListener('change', () => {
+        updateTemplateOptions();
+        persist();
+        updateComputed();
+      });
+      els.stateTemplate.addEventListener('change', () => {
+        if (els.stateTemplate.value && !els.currentState.value.trim()) {
+          els.currentState.value = els.stateTemplate.value;
+        }
+        persist();
+        updateComputed();
+      });
+
+      window.addEventListener('resize', () => updateComputed());
+    }
+
+    function persist() {
+      const payload = {
+        currentIndex: state.currentIndex,
+        answers: state.answers,
+        meta: collectMeta()
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    }
+
+    function restore() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const data = JSON.parse(raw);
+        state.currentIndex = Math.max(0, Math.min(QUESTIONS.length - 1, Number(data.currentIndex) || 0));
+        if (Array.isArray(data.answers) && data.answers.length === QUESTIONS.length) {
+          state.answers = data.answers.map(v => v === null || v === '' || typeof v === 'undefined' ? null : Number(v));
+        }
+        const meta = data.meta || {};
+        els.userName.value = meta.userName || '';
+        els.examDate.value = meta.examDate || '';
+        initGenreOptions();
+        els.genre.value = meta.genre || '';
+        updateTemplateOptions();
+        els.stateTemplate.value = meta.stateTemplate || '';
+        els.currentState.value = meta.currentState || '';
+        els.desiredState.value = meta.desiredState || '';
+        els.note.value = meta.note || '';
+      } catch (e) {
+        console.warn('restore failed', e);
+      }
+    }
+
+    function init() {
+      if (!els.examDate.value) {
+        els.examDate.value = new Date().toISOString().slice(0, 10);
+      }
+      initGenreOptions();
+      buildScorePicker();
+      buildQuickNav();
+      restore();
+      if (!els.examDate.value) {
+        els.examDate.value = new Date().toISOString().slice(0, 10);
+      }
+      bindEvents();
+      renderQuestion();
+      updateComputed();
+    }
+
+    init();
+  </script>
 </body>
 </html>
