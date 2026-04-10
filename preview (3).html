@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>5유형 스트레스 진단 · 한국어 버전</title>
+  <title>5分類ストレス診断 スマホ公開版</title>
   <style>
     :root {
       --bg: #f5f7fb;
@@ -369,60 +369,61 @@
   <div class="app">
     <section id="screenIntro" class="screen active">
       <div class="card hero">
-        <h1>5유형 스트레스 진단</h1>
-        <p class="lead">45개의 질문에 0~5로 답하면, 5가지 스트레스 축과 타고난 성향·적응·자각의 흐름을 한 번에 볼 수 있는 공개 버전입니다.</p>
+        <h1>5分類ストレス診断</h1>
+        <p class="lead">45問の0〜5回答から、5分類の強さ・素質/適応/自覚・ズレを整理し、AI相談にそのまま貼れる文章まで作る公開版です。</p>
         <div class="pill-row">
-          <span class="pill">0 = 전혀 아님</span>
-          <span class="pill">5 = 매우 강함</span>
-          <span class="pill">총 45문항</span>
-          <span class="pill">모바일용 한 문항씩</span>
+          <span class="pill">0 = 該当なし</span>
+          <span class="pill">5 = 非常に強い</span>
+          <span class="pill">全45問</span>
+          <span class="pill">スマホ向け1問ずつ表示</span>
         </div>
       </div>
 
       <div class="card">
-        <h2>이 진단은 어떤 타입?</h2>
+        <h2>この診断の位置づけ</h2>
         <div class="note-box">
-          이 진단은 당신을 단정 짓기 위한 것이 아닙니다.<br>
-          스트레스는 약점이 아니라, 지금 강하게 작동하는 방식으로 봅니다.<br>
-          결과는 자기이해·관계·일·회복 포인트를 가볍게 보는 용도로 쓰면 됩니다.
+          この診断は、あなたを決めつけるためのものではありません。<br>
+          ストレスは弱さではなく、今強く働いている機能の現れとして扱います。<br>
+          結果は自己理解だけでなく、AI相談・面談・作業配置・振り返りの材料として使えます。
         </div>
       </div>
 
       <div class="card grid">
         <div class="field">
-          <label for="userName">이름 또는 닉네임</label>
-          <input id="userName" type="text" placeholder="비워도 됩니다">
+          <label for="userName">名前またはニックネーム</label>
+          <input id="userName" type="text" placeholder="未入力でも可">
         </div>
         <div class="grid grid-2">
           <div class="field">
-            <label for="examDate">날짜</label>
+            <label for="examDate">日付</label>
             <input id="examDate" type="date">
           </div>
           <div class="field">
-            <label for="genre">고민 주제</label>
+            <label for="genre">相談ジャンル</label>
             <select id="genre"></select>
           </div>
         </div>
         <div class="field">
-          <label for="stateTemplate">상태 템플릿</label>
+          <label for="stateTemplate">状態テンプレ</label>
           <select id="stateTemplate"></select>
         </div>
         <div class="field">
-          <label for="currentState">지금 상태</label>
-          <textarea id="currentState" placeholder="예: 뭘 먼저 해야 할지 모르겠음, 움직이기 힘듦, 사람 때문에 지침"></textarea>
+          <label for="currentState">今の状態</label>
+          <textarea id="currentState" placeholder="例：何からやるか分からない、動けない、気疲れが強い"></textarea>
         </div>
         <div class="field">
-          <label for="desiredState">어떻게 되고 싶은지</label>
-          <textarea id="desiredState" placeholder="예: 우선순위를 정리하고 싶음, 바로 움직일 수 있었으면 좋겠음"></textarea>
+          <label for="desiredState">どうしたい</label>
+          <textarea id="desiredState" placeholder="例：優先順位を整理したい、すぐ動けるようにしたい"></textarea>
         </div>
         <div class="field">
-          <label for="note">추가 메모</label>
-          <textarea id="note" placeholder="배경, 상대, 환경, 마감 등"></textarea>
+          <label for="note">補足</label>
+          <textarea id="note" placeholder="背景、相手、環境、期限など"></textarea>
         </div>
         <div class="btn-row">
-          <button id="startBtn" class="btn btn-primary">진단 시작</button>
-          <button id="jumpResultBtn" class="btn btn-secondary">결과 화면 먼저 보기</button>
+          <button id="startBtn" class="btn btn-primary">診断を始める</button>
+          <button id="jumpResultBtn" class="btn btn-secondary">先に結果画面を見る</button>
         </div>
+      </div>
     </section>
 
     <section id="screenQuestion" class="screen">
@@ -430,7 +431,7 @@
         <div class="progress-wrap">
           <div class="progress-top">
             <strong id="progressLabel">Q1 / 45</strong>
-            <span><span id="answeredCount">0</span> / 45 응답</span>
+            <span><span id="answeredCount">0</span> / 45 回答</span>
           </div>
           <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
         </div>
@@ -440,27 +441,27 @@
         <div class="q-head">
           <div>
             <div class="q-number" id="qNumber">Q1 / 45</div>
-            <div class="q-text" id="qText">질문</div>
+            <div class="q-text" id="qText">質問</div>
             <div class="q-meta">
-              <span class="q-badge" id="qCategory">이해</span>
-              <span class="q-badge" id="qState">타고남</span>
+              <span class="q-badge" id="qCategory">整合</span>
+              <span class="q-badge" id="qState">素質</span>
             </div>
           </div>
           <div class="big-score">
-            <div class="label">응답</div>
+            <div class="label">回答</div>
             <div class="value" id="currentScore">0</div>
           </div>
         </div>
 
         <div class="score-picker" id="scorePicker"></div>
         <div class="score-help">
-          <span>0 = 전혀 아님</span>
-          <span>5 = 매우 강함</span>
+          <span>0 = 該当なし</span>
+          <span>5 = 非常に強い</span>
         </div>
 
         <div class="nav-row">
-          <button id="prevBtn" class="btn btn-secondary">이전</button>
-          <button id="nextBtn" class="btn btn-primary">다음</button>
+          <button id="prevBtn" class="btn btn-secondary">前へ</button>
+          <button id="nextBtn" class="btn btn-primary">次へ</button>
         </div>
 
         <div class="quick-nav" id="quickNav"></div>
@@ -468,168 +469,300 @@
 
       <div class="card">
         <div class="stats">
-          <div class="stat"><div class="k">평균 점수</div><div class="v" id="avgScore">0.0</div></div>
-          <div class="stat"><div class="k">5점 개수</div><div class="v" id="maxCount">0</div></div>
-          <div class="stat"><div class="k">미응답</div><div class="v" id="unansweredCount">45</div></div>
+          <div class="stat"><div class="k">平均濃度</div><div class="v" id="avgScore">0.0</div></div>
+          <div class="stat"><div class="k">最高スコア数</div><div class="v" id="maxCount">0</div></div>
+          <div class="stat"><div class="k">未回答</div><div class="v" id="unansweredCount">45</div></div>
         </div>
       </div>
     </section>
 
     <section id="screenResult" class="screen">
       <div class="card hero">
-        <h2>진단 결과</h2>
-        <p class="lead">5개 축의 총량뿐 아니라 타고난 경향·적응·자각의 차이까지 보이도록 구성했습니다.</p>
+        <h2>診断結果</h2>
+        <p class="lead">5分類の総量だけでなく、素質・適応・自覚の内訳とズレまで見える形にしています。</p>
       </div>
 
       <div class="card result-spotlight">
-        <div class="spotlight-kicker">먼저 보는 결과</div>
-        <div id="spotlightPraise" class="spotlight-praise">흐름을 보고 판을 읽는 감각이 있어요</div>
-        <div id="spotlightLabel" class="spotlight-label">논리 컨트롤형</div>
-        <div id="spotlightSub" class="spotlight-sub">이해 × 주도 / 타고남</div>
-        <div id="spotlightWarning" class="spotlight-warning">맞는 말을 해도 상대는 압박으로 느낄 수 있어요.</div>
+        <div class="spotlight-kicker">最初に見る結果</div>
+        <div id="spotlightPraise" class="spotlight-praise">あなたは「全体を見て構造から組み立てられる人です」</div>
+        <div id="spotlightLabel" class="spotlight-label">戦略設計者型</div>
+        <div id="spotlightSub" class="spotlight-sub">整合 × 支配 / 素質タイプ</div>
+        <div id="spotlightWarning" class="spotlight-warning">ただし、正しさが強く出すぎて反発を生みやすい傾向があります。</div>
         <div class="spotlight-meta">
-          <span id="spotlightPair" class="spotlight-chip">주요 축: 이해 × 주도</span>
-          <span id="spotlightState" class="spotlight-chip">상태: 타고남</span>
-          <span id="spotlightScores" class="spotlight-chip">합계: 0 / 0</span>
+          <span id="spotlightPair" class="spotlight-chip">主軸：整合 × 支配</span>
+          <span id="spotlightState" class="spotlight-chip">状態：素質</span>
+          <span id="spotlightScores" class="spotlight-chip">合計：0 / 0</span>
         </div>
         <div class="spotlight-actions">
-          <button id="spotlightAiBtn" class="btn btn-primary">상세 결과 보기</button>
-          <div class="spotlight-note">이 카드 그대로 캡처해서 공유할 수 있어요</div>
+          <button id="spotlightAiBtn" class="btn btn-primary">この結果をAIで深掘りする</button>
+          <div class="spotlight-note">このカードをそのままスクショして共有できます</div>
         </div>
       </div>
 
       <div class="card">
-        <h2>상태 요약</h2>
+        <h2>状態要約</h2>
         <div class="summary-chip-wrap" id="summaryChips"></div>
         <div class="plain-box" id="stateSummary" style="margin-top:12px;"></div>
       </div>
 
       <div class="card">
-        <h2>5유형 레이더</h2>
+        <h2>5分類レーダー</h2>
         <canvas id="radarCanvas" width="640" height="420"></canvas>
       </div>
 
       <div class="card">
-        <h2>5유형 바 그래프</h2>
+        <h2>5分類バー</h2>
         <canvas id="barCanvas" width="640" height="380"></canvas>
       </div>
 
       <div class="card">
-        <h2>유형별 상세</h2>
+        <h2>分類ごとの内訳</h2>
         <div id="categoryList" class="category-list"></div>
       </div>
+
+      <div class="card">
+        <h2>AIに貼る文</h2>
+        <div class="prompt-box" id="aiPrompt"></div>
       </div>
     </section>
   </div>
 
   <div class="bottom-dock-wrap">
     <details class="bottom-dock" id="bottomDock">
-      <summary class="bottom-dock-toggle">메뉴</summary>
+      <summary class="bottom-dock-toggle">操作メニュー</summary>
       <div class="bottom-dock-menu">
-        <button id="goIntroBtn" class="btn btn-secondary">소개</button>
-        <button id="goQuestionBtn" class="btn btn-ghost">질문</button>
-        <button id="goResultBtn" class="btn btn-primary">결과</button>
-        <button id="csvBtn" class="btn btn-secondary">CSV 저장</button>
-        <button id="resetBtn" class="btn btn-secondary">초기화</button>
+        <button id="goIntroBtn" class="btn btn-secondary">説明へ</button>
+        <button id="goQuestionBtn" class="btn btn-ghost">質問へ</button>
+        <button id="goResultBtn" class="btn btn-primary">結果へ</button>
+        <button id="copyBtn" class="btn btn-secondary">AI文をコピー</button>
+        <button id="csvBtn" class="btn btn-secondary">CSV保存</button>
+        <button id="resetBtn" class="btn btn-secondary">リセット</button>
       </div>
     </details>
   </div>
 
   <script>
     const QUESTIONS = [
-      { no: 1, text: "이유나 구조를 알면 더 움직이기 쉽다", category: "整合", state: "素質" },
-      { no: 2, text: "모순이나 어긋남이 있으면 신경 쓰인다", category: "整合", state: "素質" },
-      { no: 3, text: "납득 안 된 상태로 진행하는 게 불편하다", category: "整合", state: "素質" },
-      { no: 4, text: "납득 안 돼도 필요하면 움직일 수 있다", category: "整合", state: "適応" },
-      { no: 5, text: "흐름에 맞춰 일단 보류할 수 있다", category: "整合", state: "適応" },
-      { no: 6, text: "신경 쓰여도 멈추지 않고 계속할 수 있다", category: "整合", state: "適応" },
-      { no: 7, text: "나는 납득을 중요하게 생각하는 편이다", category: "整合", state: "自覚" },
-      { no: 8, text: "생각이 많아져서 멈출 때가 있다", category: "整合", state: "自覚" },
-      { no: 9, text: "납득 안 될 때 어떻게 정리할지 알고 있다", category: "整合", state: "自覚" },
-      { no: 10, text: "사람들의 시선이나 반응이 신경 쓰인다", category: "空気", state: "素質" },
-      { no: 11, text: "분위기나 감정 변화에 잘 눈치 챈다", category: "空気", state: "素質" },
-      { no: 12, text: "상대가 어떻게 느낄지 생각하고 행동한다", category: "空気", state: "素質" },
-      { no: 13, text: "상황에 맞게 말투나 행동을 바꿀 수 있다", category: "空気", state: "適応" },
-      { no: 14, text: "분위기를 깨지 않으려고 참을 때가 있다", category: "空気", state: "適応" },
-      { no: 15, text: "맞춰주면서 상황을 유지하려는 편이다", category: "空気", state: "適応" },
-      { no: 16, text: "나는 분위기에 영향을 많이 받는 편이다", category: "空気", state: "自覚" },
-      { no: 17, text: "신경을 많이 써서 지칠 때가 있다", category: "空気", state: "自覚" },
-      { no: 18, text: "어디까지 맞출지 기준을 생각한다", category: "空気", state: "自覚" },
-      { no: 19, text: "내가 결정할 수 있을 때 더 편하다", category: "支配", state: "素質" },
-      { no: 20, text: "흐름이나 방식을 정리하고 싶어질 때가 있다", category: "支配", state: "素質" },
-      { no: 21, text: "사람이나 상황을 컨트롤하고 싶어진다", category: "支配", state: "素質" },
-      { no: 22, text: "필요하면 주도적으로 움직일 수 있다", category: "支配", state: "適応" },
-      { no: 23, text: "애매할 때 방향을 잡아줄 수 있다", category: "支配", state: "適応" },
-      { no: 24, text: "주변 상황을 보고 역할을 정리하려 한다", category: "支配", state: "適応" },
-      { no: 25, text: "내가 주도권을 잡으려 할 때가 있다", category: "支配", state: "自覚" },
-      { no: 26, text: "지시할 때와 맡길 때를 구분한다", category: "支配", state: "自覚" },
-      { no: 27, text: "강하게 보일 수 있다는 걸 알고 있다", category: "支配", state: "自覚" },
-      { no: 28, text: "결과가 나오는지 중요하게 생각한다", category: "成果", state: "素質" },
-      { no: 29, text: "비효율적인 흐름에 스트레스를 느낀다", category: "成果", state: "素質" },
-      { no: 30, text: "성과와 효율을 중요하게 여긴다", category: "成果", state: "素質" },
-      { no: 31, text: "목표에 맞게 방식을 바꿀 수 있다", category: "成果", state: "適応" },
-      { no: 32, text: "결과를 위해 우선순위를 바꾼다", category: "成果", state: "適応" },
-      { no: 33, text: "필요하면 감정보다 결과를 선택한다", category: "成果", state: "適応" },
-      { no: 34, text: "나는 성과 중심적인 편이다", category: "成果", state: "自覚" },
-      { no: 35, text: "급하게 결과를 내려고 할 때가 있다", category: "成果", state: "自覚" },
-      { no: 36, text: "성과 때문에 자신이나 타인에게 엄격해진다", category: "成果", state: "自覚" },
-      { no: 37, text: "익숙하고 안정적인 방식을 선호한다", category: "安定", state: "素質" },
-      { no: 38, text: "앞이 안 보이면 불안해진다", category: "安定", state: "素質" },
-      { no: 39, text: "예상 못 한 변화에 부담을 느낀다", category: "安定", state: "素質" },
-      { no: 40, text: "정해진 방법이 있으면 움직이기 쉽다", category: "安定", state: "適応" },
-      { no: 41, text: "안전한 선택을 하려고 한다", category: "安定", state: "適応" },
-      { no: 42, text: "변화도 천천히면 적응할 수 있다", category: "安定", state: "適応" },
-      { no: 43, text: "나는 안정감을 중요하게 생각한다", category: "安定", state: "自覚" },
-      { no: 44, text: "불안하면 행동이 느려진다", category: "安定", state: "自覚" },
-      { no: 45, text: "안정될 때 더 잘할 수 있다", category: "安定", state: "自覚" }
+      { no: 1, text: "理由や仕組みがわかると動きやすい", category: "整合", state: "素質" },
+      { no: 2, text: "矛盾やズレがあると気になりやすい", category: "整合", state: "素質" },
+      { no: 3, text: "納得できないまま進むことに強い違和感がある", category: "整合", state: "素質" },
+      { no: 4, text: "納得できなくても必要なら動ける", category: "整合", state: "適応" },
+      { no: 5, text: "周囲の流れに合わせて一度保留にできる", category: "整合", state: "適応" },
+      { no: 6, text: "細かく気になっても作業を止めず進められる", category: "整合", state: "適応" },
+      { no: 7, text: "自分が納得を重視するタイプだと自覚している", category: "整合", state: "自覚" },
+      { no: 8, text: "考えすぎて止まりやすい場面を把握している", category: "整合", state: "自覚" },
+      { no: 9, text: "納得できない時にどう整えるか自分なりにわかっている", category: "整合", state: "自覚" },
+      { no: 10, text: "周囲の空気や相手の反応を自然と気にしやすい", category: "空気", state: "素質" },
+      { no: 11, text: "人の気分や場の雰囲気の変化に気づきやすい", category: "空気", state: "素質" },
+      { no: 12, text: "相手がどう感じるかを考えて動くことが多い", category: "空気", state: "素質" },
+      { no: 13, text: "周囲に合わせて自分の言い方や行動を調整できる", category: "空気", state: "適応" },
+      { no: 14, text: "場を乱さないように自分を抑えることがある", category: "空気", state: "適応" },
+      { no: 15, text: "相手に合わせることでその場を回そうとすることが多い", category: "空気", state: "適応" },
+      { no: 16, text: "自分が空気に影響されやすいと感じている", category: "空気", state: "自覚" },
+      { no: 17, text: "気を使いすぎて疲れることがあるとわかっている", category: "空気", state: "自覚" },
+      { no: 18, text: "どこまで合わせてどこで線を引くか意識している", category: "空気", state: "自覚" },
+      { no: 19, text: "自分で決められる方が動きやすい", category: "支配", state: "素質" },
+      { no: 20, text: "流れややり方を整えたくなることがある", category: "支配", state: "素質" },
+      { no: 21, text: "人や状況をコントロールしたい感覚が出やすい", category: "支配", state: "素質" },
+      { no: 22, text: "必要な場面では自分が主導して動ける", category: "支配", state: "適応" },
+      { no: 23, text: "曖昧な場面で方向性を示す役に回れる", category: "支配", state: "適応" },
+      { no: 24, text: "周囲を見ながら役割や動きを整理しようとする", category: "支配", state: "適応" },
+      { no: 25, text: "自分が主導権を持ちたがる時があるとわかっている", category: "支配", state: "自覚" },
+      { no: 26, text: "指示したくなる時と任せた方がいい時を意識できる", category: "支配", state: "自覚" },
+      { no: 27, text: "支配的に見えやすい場面を自分で把握している", category: "支配", state: "自覚" },
+      { no: 28, text: "結果が出るかどうかを強く意識しやすい", category: "成果", state: "素質" },
+      { no: 29, text: "無駄が多い流れにストレスを感じやすい", category: "成果", state: "素質" },
+      { no: 30, text: "効率や達成を重視する気持ちが強い", category: "成果", state: "素質" },
+      { no: 31, text: "目的のためにやり方を調整できる", category: "成果", state: "適応" },
+      { no: 32, text: "結果を出すために優先順位を変えられる", category: "成果", state: "適応" },
+      { no: 33, text: "必要なら感情より成果を優先して動ける", category: "成果", state: "適応" },
+      { no: 34, text: "自分が成果や効率を重視しやすいとわかっている", category: "成果", state: "自覚" },
+      { no: 35, text: "結果を急ぎすぎて余裕がなくなる時があると感じる", category: "成果", state: "自覚" },
+      { no: 36, text: "成果を求めるあまり他人や自分に厳しくなりやすいと自覚している", category: "成果", state: "自覚" },
+      { no: 37, text: "安心できる流れや慣れたやり方を選びやすい", category: "安定", state: "素質" },
+      { no: 38, text: "先が見えない状況だと不安になりやすい", category: "安定", state: "素質" },
+      { no: 39, text: "急な変化や予定外のことに負担を感じやすい", category: "安定", state: "素質" },
+      { no: 40, text: "不安があっても決まった手順があれば動ける", category: "安定", state: "適応" },
+      { no: 41, text: "安全そうなやり方を選んで失敗を減らそうとする", category: "安定", state: "適応" },
+      { no: 42, text: "変化があっても少しずつなら慣れていける", category: "安定", state: "適応" },
+      { no: 43, text: "自分が安心感を大事にするタイプだとわかっている", category: "安定", state: "自覚" },
+      { no: 44, text: "不安が強い時に動きが鈍くなりやすいと感じている", category: "安定", state: "自覚" },
+      { no: 45, text: "安定があると力を出しやすいと自覚している", category: "安定", state: "自覚" }
     ];
 
-    const CATEGORIES = ["整合", "空気", "支配", "成果", "安定"] ;
-    const CATEGORY_LABELS = { "整合": "이해", "空気": "눈치", "支配": "주도", "成果": "성과", "安定": "안정" };
-    const STATE_LABELS = { "素質": "타고남", "適応": "적응", "自覚": "자각" };
+    const CATEGORIES = ["整合", "空気", "支配", "成果", "安定"];
     const TREE = {
-      genres: ["", "일 / 작업", "인간관계", "자기이해", "연애"],
+      genres: ["", "仕事 / 作業", "人間関係", "自己理解", "恋愛"],
       templates: {
-        "일 / 작업": ["", "뭘 먼저 해야 할지 모르겠다", "효율이 떨어지고 낭비가 많다", "납득이 안 돼서 못 움직인다", "지치는데 멈출 수가 없다"],
-        "인간관계": ["", "상대 마음을 잘 모르겠다", "눈치를 너무 많이 본다", "하고 싶은 말을 못 하겠다", "거리감 잡기가 어렵다"],
-        "자기이해": ["", "내가 뭘 원하는지 모르겠다", "속마음과 행동이 어긋난다", "잘하는 것과 못하는 게 헷갈린다", "생각이 정리가 안 된다"],
-        "연애": ["", "상대에게 너무 맞춘다", "불안이 크다", "하고 싶은 말을 못 한다", "상대 속마음을 모르겠다"]
+        "仕事 / 作業": ["", "何からやるか分からない", "効率が悪い / 無駄が多い", "納得できず動けない", "疲れるのに止まれない"],
+        "人間関係": ["", "相手の気持ちが分からない", "気を使いすぎる", "言いたいことが言えない", "距離感が分からない"],
+        "自己理解": ["", "自分が何をしたいか分からない", "本音と行動がズレている", "得意不得意が分からない", "考えがまとまらない"],
+        "恋愛": ["", "相手に合わせすぎる", "不安が強い", "言いたいことが言えない", "相手の本音が分からない"]
       }
     };
 
     const STORAGE_KEY = 'stress5_public_mobile_v1';
 
     const LABEL_PATTERNS = {
-      '整合|空気|素質': { praise: '생각도 많고 눈치도 빠른 편이에요', label: '생각 눈치 과부하형', warning: '혼자 다 정리하려고 하다가 금방 과부하가 올 수 있어요.' },
-      '整合|空気|適応': { praise: '분위기 안 깨고 말 맞추는 감각이 있어요', label: '조율 눈치형', warning: '맞춰주다 보면 정작 내 기준은 뒤로 밀릴 수 있어요.' },
-      '整合|空気|自覚': { praise: '사람도 보고 의미도 챙기는 타입이에요', label: '해석 배려형', warning: '설명과 배려를 다 챙기려다 쉽게 지칠 수 있어요.' },
-      '整合|支配|素質': { praise: '흐름을 보고 판을 읽는 감각이 있어요', label: '논리 컨트롤형', warning: '맞는 말을 해도 상대는 압박으로 느낄 수 있어요.' },
-      '整合|支配|適応': { praise: '필요할 때 구조를 잡고 앞으로 나갈 수 있어요', label: '판짜기 주도형', warning: '정리 속도가 빠를수록 주변 감정은 놓치기 쉬워요.' },
-      '整合|支配|自覚': { praise: '문제 포인트를 바로 잡아내는 편이에요', label: '전제 해체형', warning: '고치려는 힘이 강할수록 비판처럼 보일 수 있어요.' },
-      '整合|成果|素質': { praise: '왜 비효율적인지 바로 보는 편이에요', label: '완벽 집착형', warning: '결과와 완성도를 같이 잡으려다 스스로를 몰아붙일 수 있어요.' },
-      '整合|成果|適応': { praise: '방법을 바꿔서라도 결과를 만드는 힘이 있어요', label: '논리 성과형', warning: '정답에 가까울수록 여유와 유연함이 줄 수 있어요.' },
-      '整合|成果|自覚': { praise: '정확도와 결과 둘 다 놓치기 싫은 타입이에요', label: '정답 집착형', warning: '잘해야 한다는 압박이 쌓이면 쉽게 예민해질 수 있어요.' },
-      '整合|安定|素質': { praise: '이해가 돼야 마음도 안정되는 편이에요', label: '불안 분석형', warning: '생각으로 불안을 줄이려다 오히려 더 커질 수 있어요.' },
-      '整合|安定|適応': { praise: '차분하게 정리하면서 버티는 힘이 있어요', label: '안정 정리형', warning: '흐름을 안전하게 만들려다 속도가 느려질 수 있어요.' },
-      '整合|安定|自覚': { praise: '내가 불안해지는 패턴을 잘 아는 편이에요', label: '예측 안심형', warning: '예상 가능한 흐름에만 머물고 싶어질 수 있어요.' },
-      '空気|支配|素質': { praise: '분위기도 보고 흐름도 잡는 편이에요', label: '눈치 리더형', warning: '상대 배려와 통제를 동시에 하려다 피로가 쌓일 수 있어요.' },
-      '空気|支配|適応': { praise: '사람 보면서 자연스럽게 주도권을 잡아요', label: '관계 주도형', warning: '좋게 끌고 가려다 책임을 과하게 떠안을 수 있어요.' },
-      '空気|支配|自覚': { praise: '내 영향력이 어떻게 보이는지 아는 편이에요', label: '분위기 장악형', warning: '상황을 읽는 힘이 강할수록 예민함도 같이 올라갈 수 있어요.' },
-      '空気|成果|素質': { praise: '사람도 챙기고 결과도 챙기고 싶은 편이에요', label: '눈치 성과형', warning: '둘 다 챙기려다 내 에너지가 먼저 바닥날 수 있어요.' },
-      '空気|成果|適応': { praise: '분위기 안 깨고 성과를 내는 감각이 있어요', label: '조용한 성과형', warning: '겉으론 부드러워도 속으론 압박이 클 수 있어요.' },
-      '空気|成果|自覚': { praise: '사람 반응과 결과를 동시에 신경 쓰는 편이에요', label: '평가 예민형', warning: '좋은 평가를 의식할수록 쉽게 지칠 수 있어요.' },
-      '空気|安定|素質': { praise: '편안한 분위기에서 힘이 나는 편이에요', label: '눈치 회피형', warning: '갈등을 피하려다 하고 싶은 말을 삼킬 수 있어요.' },
-      '空気|安定|適応': { praise: '불편한 상황을 조용히 넘기는 힘이 있어요', label: '평온 유지형', warning: '무난함을 지키려다 내 욕구가 밀릴 수 있어요.' },
-      '空気|安定|自覚': { praise: '내가 어디서 지치고 흔들리는지 아는 편이에요', label: '불안 공감형', warning: '타인 감정까지 받아내면 회복이 늦어질 수 있어요.' },
-      '支配|成果|素質': { praise: '결과를 위해 판을 움직이는 힘이 강해요', label: '성과 지배형', warning: '성과가 급할수록 사람을 몰아붙이기 쉬워요.' },
-      '支配|成果|適応': { praise: '필요할 때 치고 나가서 결과를 만드는 편이에요', label: '주도 돌파형', warning: '밀어붙이는 힘이 강할수록 주변 여유는 줄어들 수 있어요.' },
-      '支配|成果|自覚': { praise: '내가 주도하고 성과를 내야 직성이 풀리는 편이에요', label: '결과 장악형', warning: '통제 욕구가 강해질수록 피로도 같이 커질 수 있어요.' },
-      '支配|安定|素質': { praise: '내가 잡고 있어야 마음이 놓이는 편이에요', label: '통제 불안형', warning: '내 손에 없으면 불안이 커질 수 있어요.' },
-      '支配|安定|適応': { praise: '흐름을 관리하면서 안정감을 만들 수 있어요', label: '관리 안심형', warning: '안전한 통제에 익숙해지면 변화가 버겁게 느껴질 수 있어요.' },
-      '支配|安定|自覚': { praise: '내가 왜 통제하려는지 아는 편이에요', label: '질서 고수형', warning: '예상 밖 상황이 오면 긴장감이 크게 올라갈 수 있어요.' },
-      '成果|安定|素質': { praise: '결과가 안 나오면 불안해지는 편이에요', label: '성과 불안형', warning: '잘해내야 안심되는 패턴이 반복될 수 있어요.' },
-      '成果|安定|適応': { praise: '안전하게 성과 내는 방식을 찾는 편이에요', label: '안전 성과형', warning: '실패를 줄이려다 도전 강도가 낮아질 수 있어요.' },
-      '成果|安定|自覚': { praise: '성과와 안정 둘 다 놓치기 싫은 타입이에요', label: '안정 집착형', warning: '둘 다 챙기려다 오히려 내 압박만 커질 수 있어요.' }
+      '整合|空気|素質': {
+        praise: 'あなたは「論理と感情の間を自然につないでいる人です」',
+        label: '翻訳者タイプ',
+        warning: 'ただし、人に合わせるほど自分の本音や疲れを後回しにしやすい傾向があります。'
+      },
+      '整合|空気|適応': {
+        praise: 'あなたは「場を壊さずに意味を通す調整ができる人です」',
+        label: '静かな調整役',
+        warning: 'ただし、整える役を続けすぎると自分だけ負荷を抱え込みやすい傾向があります。'
+      },
+      '整合|空気|自覚': {
+        praise: 'あなたは「みんなが理解できる形に整えて渡せる人です」',
+        label: '納得設計者型',
+        warning: 'ただし、伝わる形にこだわるほど説明コストが増えて疲れやすい傾向があります。'
+      },
+
+      '整合|支配|素質': {
+        praise: 'あなたは「全体を見て構造から組み立てられる人です」',
+        label: '戦略設計者型',
+        warning: 'ただし、正しさが強く出すぎると相手には圧や反発として伝わりやすい傾向があります。'
+      },
+      '整合|支配|適応': {
+        praise: 'あなたは「必要な場面で流れを整えて前に出られる人です」',
+        label: '論理統率型',
+        warning: 'ただし、筋の通った進め方ほど人の感情の遅れを置いていきやすい傾向があります。'
+      },
+      '整合|支配|自覚': {
+        praise: 'あなたは「前提を見抜いて作り直せる人です」',
+        label: '前提破壊型',
+        warning: 'ただし、改善意識が強いほど相手には否定や批判として受け取られやすい傾向があります。'
+      },
+
+      '整合|成果|素質': {
+        praise: 'あなたは「無駄を見抜いて結果につなげやすい人です」',
+        label: '最適化実行型',
+        warning: 'ただし、効率を優先するほど丁寧さや感情面を飛ばしやすい傾向があります。'
+      },
+      '整合|成果|適応': {
+        praise: 'あなたは「筋を通しながら成果に変えられる人です」',
+        label: '論理達成型',
+        warning: 'ただし、正しいやり方に寄せすぎると柔軟さや遊びが減りやすい傾向があります。'
+      },
+      '整合|成果|自覚': {
+        praise: 'あなたは「精度を上げ続けて結果に変える力がある人です」',
+        label: '精度追求型',
+        warning: 'ただし、完成度を上げようとするほど自分にも周囲にも厳しくなりやすい傾向があります。'
+      },
+
+      '整合|安定|素質': {
+        praise: 'あなたは「崩れにくい形を自然と選べる人です」',
+        label: '安定設計型',
+        warning: 'ただし、整った形を守るほど変化への初動が遅くなりやすい傾向があります。'
+      },
+      '整合|安定|適応': {
+        praise: 'あなたは「無理なく続けられる改善を積み上げられる人です」',
+        label: '継続最適型',
+        warning: 'ただし、安全に寄せすぎると大きな挑戦や突破の機会を逃しやすい傾向があります。'
+      },
+      '整合|安定|自覚': {
+        praise: 'あなたは「長く回る土台を意識して作れる人です」',
+        label: '土台構築型',
+        warning: 'ただし、土台を固める意識が強いほど決断や展開のスピードが落ちやすい傾向があります。'
+      },
+
+      '空気|支配|素質': {
+        praise: 'あなたは「場を読みながら流れを動かせる人です」',
+        label: '空気主導型',
+        warning: 'ただし、場を読んで動かすほど周囲の反応に振り回されやすい傾向があります。'
+      },
+      '空気|支配|適応': {
+        praise: 'あなたは「人の気持ちを見ながら前に進められる人です」',
+        label: '感情統率型',
+        warning: 'ただし、相手に合わせて主導するほど本音の疲れが見えにくくなりやすい傾向があります。'
+      },
+      '空気|支配|自覚': {
+        praise: 'あなたは「状況に合わせて関わり方を切り替えられる人です」',
+        label: '柔軟リーダー型',
+        warning: 'ただし、空気と主導を両立しようとするほど消耗や迷いが増えやすい傾向があります。'
+      },
+
+      '空気|成果|素質': {
+        praise: 'あなたは「人を見ながら結果につなげやすい人です」',
+        label: '共感達成型',
+        warning: 'ただし、人も成果も両方見ようとするほど自分の負担が後回しになりやすい傾向があります。'
+      },
+      '空気|成果|適応': {
+        praise: 'あなたは「衝突を避けながら前に進められる人です」',
+        label: '調和実行型',
+        warning: 'ただし、波風を立てない進め方を優先するほど本当の課題が後ろに残りやすい傾向があります。'
+      },
+      '空気|成果|自覚': {
+        praise: 'あなたは「場の流れを読んで結果を作れる人です」',
+        label: '空気推進型',
+        warning: 'ただし、周囲の空気に反応して動くほど自分の基準がぶれやすい傾向があります。'
+      },
+
+      '空気|安定|素質': {
+        praise: 'あなたは「場の安心感を自然に作れる人です」',
+        label: '安心供給型',
+        warning: 'ただし、人を安心させるほど自分の消耗に気づきにくい傾向があります。'
+      },
+      '空気|安定|適応': {
+        praise: 'あなたは「関係を保ちながら落ち着かせられる人です」',
+        label: '共感維持型',
+        warning: 'ただし、安心と配慮を優先するほど判断や切り替えが遅れやすい傾向があります。'
+      },
+      '空気|安定|自覚': {
+        praise: 'あなたは「どこでもなじみ方を見つけられる人です」',
+        label: '空気適応型',
+        warning: 'ただし、合わせる力が高いほど自分の軸や希望が見えにくくなりやすい傾向があります。'
+      },
+
+      '支配|成果|素質': {
+        praise: 'あなたは「決めて動かし結果まで持っていける人です」',
+        label: '構築リーダー型',
+        warning: 'ただし、前に進める力が強いほど周囲の余力や感情を削りやすい傾向があります。'
+      },
+      '支配|成果|適応': {
+        praise: 'あなたは「必要な場面で主導して前進できる人です」',
+        label: '主導推進型',
+        warning: 'ただし、決断の速さが強みになるほど押しの強さとして伝わりやすい傾向があります。'
+      },
+      '支配|成果|自覚': {
+        praise: 'あなたは「流れを最適化して結果に変えられる人です」',
+        label: '最適化支配型',
+        warning: 'ただし、効率を上げる意識が強いほど人の感情や納得を置き去りにしやすい傾向があります。'
+      },
+
+      '支配|安定|素質': {
+        praise: 'あなたは「崩れにくい形で全体を動かせる人です」',
+        label: '安定統率型',
+        warning: 'ただし、管理が強いほど相手には窮屈さや監視感として伝わりやすい傾向があります。'
+      },
+      '支配|安定|適応': {
+        praise: 'あなたは「リスクを抑えながら進められる人です」',
+        label: '管理最適型',
+        warning: 'ただし、安全に進める意識が強いほど変化や挑戦へのアクセルが弱くなりやすい傾向があります。'
+      },
+      '支配|安定|自覚': {
+        praise: 'あなたは「状況を保ちながら影響を与えられる人です」',
+        label: '制御維持型',
+        warning: 'ただし、保とうとする力が強いほど手放しや委任がしにくくなりやすい傾向があります。'
+      },
+
+      '成果|安定|素質': {
+        praise: 'あなたは「結果につながる選択を無意識に取っている人です」',
+        label: '実行参謀型',
+        warning: 'ただし、成果を優先するほど自分の安定や休息を削りやすい傾向があります。'
+      },
+      '成果|安定|適応': {
+        praise: 'あなたは「結果を出しながら続ける力を持っている人です」',
+        label: '加速維持型',
+        warning: 'ただし、回し続ける意識が強いほど疲労や限界に気づくのが遅れやすい傾向があります。'
+      },
+      '成果|安定|自覚': {
+        praise: 'あなたは「無理しすぎず成果を積み上げる視点を持っている人です」',
+        label: 'バランス達成型',
+        warning: 'ただし、両立を意識するほど中途半端さや迷いを感じやすい傾向があります。'
+      }
     };
 
     function getTopTwoCategories(byCategory) {
@@ -661,14 +794,14 @@
       const dominant = getDominantState(pair, result.byCategory);
       const key = `${pair[0]}|${pair[1]}|${dominant.state}`;
       const pattern = LABEL_PATTERNS[key] || {
-        praise: '지금 강하게 작동하는 축이 분명한 편이에요',
-        label: '패턴 감지형',
-        warning: '강한 힘일수록 무리할 때는 부담으로 바뀔 수 있어요.'
+        praise: 'あなたは「強く働いている軸を自分の中に持っている人です」',
+        label: '分析対象型',
+        warning: 'ただし、強みとして働く力ほど過剰になると負担やズレとして出やすい傾向があります。'
       };
       return {
         ...pattern,
         pair,
-        pairText: `${CATEGORY_LABELS[pair[0]] || pair[0]} × ${CATEGORY_LABELS[pair[1]] || pair[1]}`,
+        pairText: `${pair[0]} × ${pair[1]}`,
         state: dominant.state,
         pairTotal: result.byCategory[pair[0]].total + result.byCategory[pair[1]].total,
         stateScore: dominant.score
@@ -679,11 +812,11 @@
       const spotlight = getSpotlightResult(result);
       els.spotlightPraise.textContent = spotlight.praise;
       els.spotlightLabel.textContent = spotlight.label;
-      els.spotlightSub.textContent = `${spotlight.pairText} / ${STATE_LABELS[spotlight.state] || spotlight.state}`;
+      els.spotlightSub.textContent = `${spotlight.pairText} / ${spotlight.state}タイプ`;
       els.spotlightWarning.textContent = spotlight.warning;
-      els.spotlightPair.textContent = `주요 축: ${spotlight.pairText}`;
-      els.spotlightState.textContent = `상태: ${STATE_LABELS[spotlight.state] || spotlight.state}`;
-      els.spotlightScores.textContent = `합계: ${spotlight.pairTotal} / 상태 점수: ${spotlight.stateScore}`;
+      els.spotlightPair.textContent = `主軸：${spotlight.pairText}`;
+      els.spotlightState.textContent = `状態：${spotlight.state}`;
+      els.spotlightScores.textContent = `主軸合計：${spotlight.pairTotal} / 状態値：${spotlight.stateScore}`;
     }
 
     const state = {
@@ -709,6 +842,7 @@
       goIntroBtn: document.getElementById('goIntroBtn'),
       goQuestionBtn: document.getElementById('goQuestionBtn'),
       goResultBtn: document.getElementById('goResultBtn'),
+      copyBtn: document.getElementById('copyBtn'),
       csvBtn: document.getElementById('csvBtn'),
       resetBtn: document.getElementById('resetBtn'),
       bottomDock: document.getElementById('bottomDock'),
@@ -730,6 +864,7 @@
       summaryChips: document.getElementById('summaryChips'),
       stateSummary: document.getElementById('stateSummary'),
       categoryList: document.getElementById('categoryList'),
+      aiPrompt: document.getElementById('aiPrompt'),
       radarCanvas: document.getElementById('radarCanvas'),
       barCanvas: document.getElementById('barCanvas'),
       spotlightPraise: document.getElementById('spotlightPraise'),
@@ -755,13 +890,13 @@
     }
 
     function initGenreOptions() {
-      els.genre.innerHTML = TREE.genres.map(v => `<option value="${v}">${v || '선택해 주세요'}</option>`).join('');
+      els.genre.innerHTML = TREE.genres.map(v => `<option value="${v}">${v || '選択してください'}</option>`).join('');
       updateTemplateOptions();
     }
 
     function updateTemplateOptions() {
       const options = TREE.templates[els.genre.value] || [""];
-      els.stateTemplate.innerHTML = options.map(v => `<option value="${v}">${v || '선택 가능한 템플릿 없음'}</option>`).join('');
+      els.stateTemplate.innerHTML = options.map(v => `<option value="${v}">${v || 'テンプレ候補なし'}</option>`).join('');
     }
 
     function buildScorePicker() {
@@ -771,7 +906,7 @@
         btn.type = 'button';
         btn.className = 'score-btn';
         btn.dataset.value = String(i);
-        btn.innerHTML = `${i}<small>${i === 0 ? '없음' : i === 5 ? '강함' : ''}</small>`;
+        btn.innerHTML = `${i}<small>${i === 0 ? 'なし' : i === 5 ? '強い' : ''}</small>`;
         btn.addEventListener('click', () => {
           state.answers[state.currentIndex] = i;
           persist();
@@ -805,11 +940,11 @@
       els.progressLabel.textContent = `Q${state.currentIndex + 1} / ${QUESTIONS.length}`;
       els.qNumber.textContent = `Q${q.no} / ${QUESTIONS.length}`;
       els.qText.textContent = q.text;
-      els.qCategory.textContent = CATEGORY_LABELS[q.category] || q.category;
-      els.qState.textContent = STATE_LABELS[q.state] || q.state;
+      els.qCategory.textContent = q.category;
+      els.qState.textContent = q.state;
       els.currentScore.textContent = String(value);
       els.prevBtn.disabled = state.currentIndex === 0;
-      els.nextBtn.textContent = state.currentIndex === QUESTIONS.length - 1 ? '결과 보기' : '다음';
+      els.nextBtn.textContent = state.currentIndex === QUESTIONS.length - 1 ? '結果を見る' : '次へ';
 
       [...els.scorePicker.children].forEach(btn => {
         btn.classList.toggle('active', Number(btn.dataset.value) === value);
@@ -857,7 +992,7 @@
         const row = byCategory[cat];
         row.rate = row.total / row.max;
         row.gap = Math.abs(row["素質"] - row["適応"]);
-        row.status = row.total >= 30 ? '높음' : row.total <= 20 ? '낮음' : '보통';
+        row.status = row.total >= 30 ? '高' : row.total <= 20 ? '低' : '中';
       });
 
       const highItems = CATEGORIES.filter(cat => byCategory[cat].total >= 30);
@@ -873,9 +1008,9 @@
       return {
         answers,
         byCategory,
-        highItems: highItems.length ? highItems : ['없음'],
-        lowItems: lowItems.length ? lowItems : ['없음'],
-        gapItems: gapItems.length ? gapItems : ['없음'],
+        highItems: highItems.length ? highItems : ['なし'],
+        lowItems: lowItems.length ? lowItems : ['なし'],
+        gapItems: gapItems.length ? gapItems : ['なし'],
         mainTrait,
         stressAxis,
         avg,
@@ -886,27 +1021,73 @@
 
     function generateSummary(result) {
       return [
-        '【상태 요약】',
-        `높게 나온 축: ${result.highItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
-        `낮게 나온 축: ${result.lowItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
-        `차이가 큰 축: ${result.gapItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
-        `가장 기본 성향: ${CATEGORY_LABELS[result.mainTrait] || result.mainTrait}`,
-        `가장 많이 자극받는 축: ${CATEGORY_LABELS[result.stressAxis] || result.stressAxis}`
+        '【状態要約】',
+        `■高い項目：${result.highItems.join('、')}`,
+        `■低い項目：${result.lowItems.join('、')}`,
+        `■ズレ：${result.gapItems.join('、')}`,
+        `■素質主軸：${result.mainTrait}`,
+        `■ストレス軸：${result.stressAxis}`
       ].join('\n');
     }
 
     function generatePrompt(result) {
-      return '';
+      const meta = collectMeta();
+      return [
+        'この情報はすでに整理された分析結果です。再解釈ではなく、この状態を前提に分析してください。',
+        '',
+        '【思考ルール】',
+        '・表面的ではなく構造で説明する',
+        '・原因と結果を分ける',
+        '・メリットとデメリットの二面性で整理する',
+        '・個人→周囲→環境の順で視点を広げる',
+        '',
+        '以下は「5分類ストレス診断」の結果です。',
+        'この診断は、整合・空気・支配・成果・安定の5分類を可視化し、AI相談に渡す材料を作るためのものです。',
+        'この結果は、性格を決めつけるためのものではありません。',
+        '',
+        '【今回のラベル】',
+        `${getSpotlightResult(result).label}（${getSpotlightResult(result).pairText} / ${getSpotlightResult(result).state}）`,
+        getSpotlightResult(result).warning,
+        '',
+        '【診断結果】',
+        ...CATEGORIES.map(cat => `${cat}：${result.byCategory[cat].total}`),
+        '',
+        '【状態分析】',
+        ...CATEGORIES.map(cat => `${cat}：素質 ${result.byCategory[cat]["素質"]} / 適応 ${result.byCategory[cat]["適応"]} / 自覚 ${result.byCategory[cat]["自覚"]}`),
+        '',
+        generateSummary(result),
+        '',
+        '【相談内容】',
+        `相談ジャンル：${meta.genre}`,
+        `今の状態：${meta.currentState}`,
+        `どうしたい：${meta.desiredState}`,
+        `補足：${meta.note}`,
+        '',
+        '【出力形式】',
+        '① 本質',
+        '② 構造',
+        '③ 具体例',
+        '④ 応用',
+        '⑤ 今日できる行動（3つ）',
+        '',
+        '【条件】',
+        '・抽象と具体を行き来する',
+        '・感情と論理の両面で説明',
+        '・再現性のある提案',
+        '・ストレス原因と対処を含める',
+        '・最も影響の大きいポイントを優先順位付きで示す'
+      ].join('\n');
     }
 
     function renderSummary(result) {
       els.stateSummary.textContent = generateSummary(result);
+      els.aiPrompt.textContent = generatePrompt(result);
       const chips = [
-        `높게 나온 축: ${result.highItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
-        `낮게 나온 축: ${result.lowItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
-        `차이가 큰 축: ${result.gapItems.map(v => CATEGORY_LABELS[v] || v).join(' / ')}`,
-        `기본 성향: ${CATEGORY_LABELS[result.mainTrait] || result.mainTrait}`,
-        `자극받는 축: ${CATEGORY_LABELS[result.stressAxis] || result.stressAxis}`
+        `高い項目：${result.highItems.join('、')}`,
+        `低い項目：${result.lowItems.join('、')}`,
+        `ズレ：${result.gapItems.join('、')}`,
+        `素質主軸：${result.mainTrait}`,
+        `ストレス軸：${result.stressAxis}`
       ];
       els.summaryChips.innerHTML = chips.map(text => `<span class="summary-chip">${text}</span>`).join('');
     }
@@ -918,12 +1099,12 @@
         return `
           <div class="cat-card">
             <div class="cat-top">
-              <div class="cat-name">${CATEGORY_LABELS[cat] || cat}</div>
+              <div class="cat-name">${cat}</div>
               <div class="cat-score">${row.total} / ${row.max}</div>
             </div>
             <div class="mini-bar"><span style="width:${pct}%"></span></div>
             <div class="cat-meta">
-              타고남 ${row["素質"]} / 적응 ${row["適応"]} / 자각 ${row["自覚"]} / 차이 ${row.gap} / 상태 ${row.status}
+              素質 ${row["素質"]} / 適応 ${row["適応"]} / 自覚 ${row["自覚"]} / ズレ ${row.gap} / 状態 ${row.status}
             </div>
           </div>
         `;
@@ -972,7 +1153,7 @@
         ctx.font = 'bold 15px sans-serif';
         ctx.textAlign = lx < cx - 10 ? 'right' : lx > cx + 10 ? 'left' : 'center';
         ctx.textBaseline = ly < cy - 5 ? 'bottom' : ly > cy + 5 ? 'top' : 'middle';
-        ctx.fillText(CATEGORY_LABELS[cat] || cat, lx, ly);
+        ctx.fillText(cat, lx, ly);
       });
 
       ctx.beginPath();
@@ -1022,7 +1203,7 @@
         ctx.font = 'bold 16px sans-serif';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
-        ctx.fillText(CATEGORY_LABELS[cat] || cat, 20, y + barH / 2);
+        ctx.fillText(cat, 20, y + barH / 2);
 
         ctx.fillStyle = '#edf2fb';
         roundRect(ctx, left, y, maxW, barH, 9, true, false);
@@ -1031,7 +1212,7 @@
 
         ctx.fillStyle = '#64708a';
         ctx.font = '13px sans-serif';
-        ctx.fillText(`타고남 ${result.byCategory[cat]["素質"]} / 적응 ${result.byCategory[cat]["適応"]} / 자각 ${result.byCategory[cat]["自覚"]}`, left, y + 34);
+        ctx.fillText(`素質 ${result.byCategory[cat]["素質"]} / 適応 ${result.byCategory[cat]["適応"]} / 自覚 ${result.byCategory[cat]["自覚"]}`, left, y + 34);
 
         ctx.fillStyle = '#182033';
         ctx.font = 'bold 14px sans-serif';
@@ -1099,18 +1280,30 @@
         lines.push(toCSVRow(['answer', answer.no, answer.category, answer.state, answer.text, answer.value ?? '']));
       });
       lines.push(toCSVRow(['summary', 'text', generateSummary(result)]));
+      lines.push(toCSVRow(['prompt', 'text', generatePrompt(result)]));
 
       const csv = '\uFEFF' + lines.join('\n');
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = '5유형_스트레스_진단_응답.csv';
+      a.download = '5分類ストレス診断_回答データ.csv';
       a.click();
       URL.revokeObjectURL(url);
       closeDock();
     }
 
+    async function copyPrompt() {
+      try {
+        await navigator.clipboard.writeText(els.aiPrompt.textContent || '');
+        const original = els.copyBtn.textContent;
+        els.copyBtn.textContent = 'コピーしました';
+        setTimeout(() => els.copyBtn.textContent = original, 1400);
+        closeDock();
+      } catch (e) {
+        alert('コピーに失敗しました。ブラウザ設定を確認してください。');
+      }
+    }
 
     function bindEvents() {
       els.startBtn.addEventListener('click', () => showScreen('question'));
@@ -1120,11 +1313,12 @@
       els.goResultBtn.addEventListener('click', () => showScreen('result'));
       els.spotlightAiBtn.addEventListener('click', () => {
         showScreen('result');
-        document.getElementById('categoryList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('aiPrompt').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
+      els.copyBtn.addEventListener('click', copyPrompt);
       els.csvBtn.addEventListener('click', downloadCSV);
       els.resetBtn.addEventListener('click', () => {
-        if (!confirm('입력 내용을 모두 지울까요?')) return;
+        if (!confirm('入力内容をすべて消します。よろしいですか？')) return;
         localStorage.removeItem(STORAGE_KEY);
         location.reload();
       });
