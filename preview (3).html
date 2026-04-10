@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스트레스 상태 진단</title>
+<style>
+body{font-family:sans-serif;background:#111;color:#fff;margin:0;padding:20px}
+.container{max-width:600px;margin:auto}
+button{padding:12px 20px;margin-top:10px;border:none;border-radius:8px;background:#4CAF50;color:#fff;font-size:16px}
+.card{background:#222;padding:20px;border-radius:12px;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>스트레스 상태 진단</h2>
+
+<div id="start">
+<p>지금 당신의 상태를 확인해보세요</p>
+<button onclick="startTest()">시작하기</button>
+</div>
+
+<div id="test" style="display:none;">
+<p id="question"></p>
+<button onclick="next()">다음</button>
+</div>
+
+<div id="result" style="display:none;">
+<div class="card">
+<h3 id="label"></h3>
+<p id="desc"></p>
+</div>
+<button onclick="restart()">다시 하기</button>
+</div>
+
+</div>
+
+<script>
+const questions = [
+"이유를 알면 더 움직이기 쉽다",
+"사람들의 시선이 신경 쓰인다",
+"주도권을 잡고 싶을 때가 있다",
+"결과가 중요하게 느껴진다",
+"안정된 상황이 편하다"
+];
+
+let index = 0;
+
+function startTest(){
+document.getElementById("start").style.display="none";
+document.getElementById("test").style.display="block";
+showQ();
+}
+
+function showQ(){
+document.getElementById("question").innerText = questions[index];
+}
+
+function next(){
+index++;
+if(index >= questions.length){
+showResult();
+}else{
+showQ();
+}
+}
+
+function showResult(){
+document.getElementById("test").style.display="none";
+document.getElementById("result").style.display="block";
+
+const types = [
+["이해 집착형","생각이 많고 멈추기 쉬운 타입"],
+["눈치 과부하형","신경을 많이 써서 쉽게 지치는 타입"],
+["주도권 장악형","상황을 통제하려는 경향"],
+["결과 중독형","성과 중심으로 움직이는 타입"],
+["안정 의존형","안정이 있어야 힘이 나는 타입"]
+];
+
+let pick = types[Math.floor(Math.random()*types.length)];
+document.getElementById("label").innerText = pick[0];
+document.getElementById("desc").innerText = pick[1];
+}
+
+function restart(){
+location.reload();
+}
+</script>
+
+</body>
+</html>
